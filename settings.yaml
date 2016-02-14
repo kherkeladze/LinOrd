@@ -6,7 +6,7 @@ times:
    after_relation: 0.25
    after_pair: [2, 2.5]
    after_last_pair: [3, 3.5]
-   time_to_respond: 2
+   response: 2
 
 sizes:
    letter: 2.5
@@ -16,3 +16,10 @@ sizes:
 fix_shape: 'circle'
 fix_between_pairs: True
 fix_during_wait: True
+
+# keys for yes/no (mapping is randomized)
+resp_keys: [f, j]
+
+quit:
+   enable: True
+   button: q

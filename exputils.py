@@ -60,6 +60,15 @@ class LinOrdExperiment(object):
 			[2, 3, 3, 4, 1, 2]], [[1, 2, 3, 4, 2, 3],
 			[3, 4, 1, 2, 2, 3]]] ) - 1
 		# select rows and columns
+		row_ind = self.settings['condition_rows']
+		col_ind = self.settings['condition_columns']
+		if len(col_ind) == 2:
+			row_ind = [row_ind[0]] * 2 + [row_ind[1]] * 2
+			col_ind = col_ind * 2
+		self.conditions = self.conditions[row_ind, col_ind, :]
+		self.conditions = self.conditions.reshape(
+			len(self.settings['condition_rows']),
+			len(self.settings['condition_columns']), 6)
 		self.all_questions = [[[0,1], [1,2], [2,3]], [[0,2], [1,3]], [[0,3]]]
 
 		self.create_stimuli()

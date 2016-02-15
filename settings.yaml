@@ -31,6 +31,8 @@ resp_keys: [f, j]
 # w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
 repetitions: 2
+condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)
+condition_columns: [0, 1] # obie sekwencje dla każdego warunku
 
 przerwa_co_ile_modeli: 1
 tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę. Możesz teraz mrugać i ruszać się do woli. Aby przejść dalej naciśnij dowolny klawisz.

@@ -142,6 +142,8 @@ class LinOrdExperiment(object):
 							  keyList=self.resp_keys,
 					  		  timeStamped=self.clock)
 		# return response
+		if isinstance(resp, list):
+			resp = resp[0]
 		return (times, resp)
 
 	def ask_questions(self, questions, feedback=None):

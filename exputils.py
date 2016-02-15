@@ -11,9 +11,8 @@ import pandas as pd
 from psychopy import visual, event, core
 
 # TODOs:
-# - [x] copy time transformation
-# - [x] copy fixation object
-# - [x] copy loading settings etc.
+# - [ ] test przerwa
+# - [ ] save output
 # - [ ] copy marker sending from my proc
 # - [ ] 
 

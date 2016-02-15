@@ -222,6 +222,37 @@ class LinOrdExperiment(object):
 		sequence = self.conditions[ii, jj, :]
 		return model, sequence, relation
 
+	def filldf(self, trial, model, sequence, relation, questions):
+		inds = np.where(self.trials['model'] == trial)[0]
+		trial_df = self.trials.loc[inds, :]
+
+		self.df.loc[inds, 'trial'] = trial
+		self.df.loc[inds, 'model'] = ''.join(model)
+		self.df.loc[inds, 'relation'] = relation
+		cnd = int(np.all(sequence[-2:] == [1, 2]))
+		self.df.loc[inds, 'condition'] = ['easy', 'difficult'][cnd]
+		for i, ind in enumerate(inds):
+			self.df.loc[ind, 'show_order'] = str(sequence)
+			self.df.loc[ind, 'question'] = questions[i]
+			self.df.loc[ind, 'question_distance'] = trial_df.loc[ind, 'question_distance']
+			self.df.loc[ind, 'question_reversed'] = trial_df.loc[ind, 'inverted_relation']
+			self.df.loc[ind, 'iftrue'] = trial_df.loc[ind, 'yesanswer']
+
+	def save_responses(self, trial, time_and_resp):
+		inds = np.where(self.trials['model'] == trial)[0]
+		trial_df = self.trials.loc[inds, :]
+		for i, elems in enumerate(time_and_resp):
+			_, resp = elems
+			if resp is not None:
+				self.df.loc[inds[i], 'answer'] = int(self.resp_mapping[resp[0]])
+				self.df.loc[inds[i], 'ifcorrect'] = int(self.resp_mapping[resp[0]] == \
+					self.df.loc[inds[i], 'iftrue'])
+				self.df.loc[inds[i], 'RT'] = resp[1]
+			else:
+				self.df.loc[inds[i], 'answer'] = np.nan
+				self.df.loc[inds[i], 'ifcorrect'] = 0
+				self.df.loc[inds[i], 'RT'] = np.nan
+
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])

@@ -95,7 +95,7 @@ class LinOrdExperiment(object):
 
 	def create_stimuli(self):
 		args = {'units': 'deg', 'height': self.settings['sizes']['letter']}
-		self.stim = {l: visual.TextStim(self.window, text=l, **args)
+		self.stim = {l: visual.TextStim(self.window, text=l.upper(), **args)
 			for l in self.letters + self.relations + ['?']}
 
 		# fixation cross/circle

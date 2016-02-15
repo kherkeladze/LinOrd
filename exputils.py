@@ -174,16 +174,21 @@ class LinOrdExperiment(object):
 			all_times.append(times)
 		return np.array(times)
 
-	def show_trial(self, trial, ):
+	def show_trial(self, trial):
+		# get model and relation
+		model, sequence, relation = self.get_model(trial)
+
+		# get questions
+		questions = self.get_questions(model, relation, trial)
+		self.filldf(trial, model, sequence, relation, questions)
+
+		# show premises
+		premise_times = self.show_premises(model, sequence, relation)
+
+		# show questions
+		time_and_resp = self.ask_questions(questions)
+		self.save_responses(trial, time_and_resp)
 		pass
-
-	def create_trials(self):
-		sequence = random.sample(self.letters, 4)
-		sequence = np.array(sequence)
-
-		# losujemy warunek i wersję
-		ind = random.sample(range(4), 1) + random.sample(range(2), 1)
-		current_cond = conditions[ind[0], ind[1], :]
 
 	def reverse_relation(self, relation):
 		if relation == '>':

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 from __future__ import division, print_function
 
 import os
@@ -11,17 +11,12 @@ import pandas as pd
 from psychopy import visual, event, core
 
 # TODOs:
-# - [ ] copy time transformation
-# - [ ] copy fixation object
-# - [ ] copy loading settings etc.
+# - [x] copy time transformation
+# - [x] copy fixation object
+# - [x] copy loading settings etc.
 # - [ ] copy marker sending from my proc
 # - [ ] 
 
-# out df:
-# model   show_order  condition  question question_type
-# 'ABCD'  1,2,3,4,2,3 'easy'     'CA'     2             0
-# correct_answer  answer ifcorrect RT
-# 0               1      0         1.2189
 
 class LinOrdExperiment(object):
 	def __init__(self, window, config_file):

@@ -69,6 +69,14 @@ class LinOrdExperiment(object):
 		else:
 			return time
 
+	def present_break(self):
+		text = visual.TextStim(text=self.settings['tekst_przerwy'])
+		k = False
+		while not k:
+			text.draw()
+			self.window.flip()
+			k = event.getKeys()
+
 	def create_stimuli(self):
 		args = {'units': 'deg', 'height': self.settings['sizes']['letter']}
 		self.stim = {l: visual.TextStim(self.window, text=l, **args)

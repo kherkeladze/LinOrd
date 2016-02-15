@@ -53,7 +53,6 @@ class LinOrdExperiment(object):
 		self.letters = list('bcdfghjklmnprstwxz')
 		self.relations = ['>', '<']
 
-		self.create_stimuli()
 
 		# wszystkie możliwe sekwencje
 		# w wierszach warunki, w kolumnach wersje
@@ -61,6 +60,11 @@ class LinOrdExperiment(object):
 			[3, 4, 2, 3, 1, 2]], [[2, 3, 1, 2, 3, 4],
 			[2, 3, 3, 4, 1, 2]], [[1, 2, 3, 4, 2, 3],
 			[3, 4, 1, 2, 2, 3]]] ) - 1
+		# select rows and columns
+		self.all_questions = [[[0,1], [1,2], [2,3]], [[0,2], [1,3]], [[0,3]]]
+
+		self.create_stimuli()
+		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 
 	def get_time(self, stim):
 		time = self.times[stim]
@@ -167,16 +171,25 @@ class LinOrdExperiment(object):
 		ind = random.sample(range(4), 1) + random.sample(range(2), 1)
 		current_cond = conditions[ind[0], ind[1], :]
 
-	def create_questions(self, model, relation):
+	def reverse_relation(self, relation):
+		if relation == '>':
+			return '<'
+		else:
+			return '>'
+
+	def _create_question(self, model, relation, distance, reverse, ifpos):
 		if isinstance(model, str):
 			model = list(model)
 		model = np.asarray(model)
-		all_questions = [[[0,3]], [[0,2], [1,3]], [[0,1], [1,2], [2,3]]]
-		chosen_questions = [random.sample(x, 1)[0] for x in all_questions]
-		chosen_questions = [' '.join([model[x[0]], relation, model[x[1]]])
-			for x in chosen_questions]
-		random.shuffle(chosen_questions)
-		return chosen_questions
+
+		q_pair = random.sample(self.all_questions[distance], 1)[0]
+		if reverse:
+			relation = self.reverse_relation(relation)
+			q_pair.reverse()
+		if not ifpos:
+			q_pair.reverse()
+
+		return ' '.join([model[q_pair[0]], relation, model[q_pair[1]]])
 
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape

@@ -178,6 +178,14 @@ class LinOrdExperiment(object):
 		random.shuffle(chosen_questions)
 		return chosen_questions
 
+	def _create_combinations_matrix(self, repetitions=1):
+		cnd_shp = self.conditions.shape
+		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
+			for mcol in range(cnd_shp[1]) for qtp in range(3)
+			for inv in range(2) for yes in range(2)]
+		return np.array(mat)
+
+
 
 # stimuli
 # -------

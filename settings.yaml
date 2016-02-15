@@ -22,6 +22,16 @@ fix_during_wait: True
 # keys for yes/no (mapping is randomized)
 resp_keys: [f, j]
 
+# wybór triali
+# ------------
+# repetitions mówi o tym ile razy bierzemy podstawowe kombinacje
+# jeżeli używamy 2 trudności * 2 kolejności modeli
+# a do każdego mamy 3 odległości pytań * 2 czyodwrócona relacja * 2 czyodpowiedź tak
+# to mamy 4 warunki a do każdego 4 pakiety pytań (po 3)
+# w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
+# te wartość mnożymy przez repetitions i mamy docelową liczbę triali
+repetitions: 2
+
 przerwa_co_ile_modeli: 1
 tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę. Możesz teraz mrugać i ruszać się do woli. Aby przejść dalej naciśnij dowolny klawisz.
 

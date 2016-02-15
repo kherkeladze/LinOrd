@@ -200,6 +200,15 @@ class LinOrdExperiment(object):
 
 		return ' '.join([model[q_pair[0]], relation, model[q_pair[1]]])
 
+	def get_questions(self, model, relation, trial):
+		chose_ind = self.trials['model'] == trial
+		trial_df = self.trials.loc[chose_ind, :]
+		questions = [self._create_question(model, relation,
+			trial_df.loc[i, 'question_distance'],
+			trial_df.loc[i, 'inverted_relation'],
+			trial_df.loc[i, 'yesanswer']) for i in trial_df.index]
+		return questions
+
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])

@@ -13,8 +13,11 @@ from psychopy import visual, event, core
 # TODOs:
 # - [ ] test przerwa
 # - [ ] save output
+# - [ ] fill_df
+# - [ ] save_responses
 # - [ ] copy marker sending from my proc
-# - [ ] 
+# - [ ] add feedback to questions
+# - [ ] add save/nosave option
 
 
 class LinOrdExperiment(object):

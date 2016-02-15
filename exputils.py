@@ -73,6 +73,7 @@ class LinOrdExperiment(object):
 
 		self.create_stimuli()
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
+		self.create_df()
 
 	def get_time(self, stim):
 		time = self.times[stim]
@@ -232,6 +233,18 @@ class LinOrdExperiment(object):
 			mat = np.delete(mat, rm_row, axis=0)
 			nrow = mat.shape[0]
 		return df
+
+	def create_df(self):
+		self.df = pd.DataFrame(columns=['trial', 'model',
+			'show_order', 'relation', 'condition', 'question',
+			'question_distance', 'question_reversed',
+			'iftrue', 'answer', 'ifcorrect', 'RT'],
+			index=range(0, self.trials.shape[0]))
+
+	def save_data(self):
+		fl = os.path.join('data', self.subject_id)
+		self.df.to_excel(fl + '.xls')
+		self.df.to_csv(fl + '.csv')
 
 
 # stimuli

@@ -212,6 +212,16 @@ class LinOrdExperiment(object):
 			trial_df.loc[i, 'yesanswer']) for i in trial_df.index]
 		return questions
 
+	def get_model(self, trial):
+		chose_ind = self.trials['model'] == trial
+		trial_df = self.trials.loc[chose_ind, :]
+
+		model = random.sample(self.letters, 4)
+		relation = random.sample(self.relations, 1)[0]
+		ii, jj = trial_df.iloc[0, [1,2]]
+		sequence = self.conditions[ii, jj, :]
+		return model, sequence, relation
+
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])

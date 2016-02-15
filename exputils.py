@@ -330,6 +330,9 @@ def fix(win, height=0.3, width=0.1, shape='circle', color=(0.5, 0.5, 0.5)):
 # ----
 def get_frame_time(win, frames=25):
 	frame_rate = win.getActualFrameRate(nIdentical = frames)
+	if frame_rate is None:
+		# try one more time
+		frame_rate = win.getActualFrameRate(nIdentical = frames)
 	return 1.0 / frame_rate
 
 def s2frames(time_in_seconds, frame_time):

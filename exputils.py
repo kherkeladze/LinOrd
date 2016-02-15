@@ -144,12 +144,14 @@ class LinOrdExperiment(object):
 		# return response
 		return (times, resp)
 
-	def ask_questions(self, model, relation):
-		questions = self.create_questions(model, relation)
+	def ask_questions(self, questions, feedback=None):
 		output = list()
 		for q in questions:
 			# pre-question time?
-			output.append(self.ask_question(question))
+			output.append(self.ask_question(q))
+		if feedback is not None:
+			print('nothing yet')
+		return output
 
 	def show_premises(self, model, sequence, relation):
 		all_times = list()

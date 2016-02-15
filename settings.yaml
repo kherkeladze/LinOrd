@@ -6,6 +6,8 @@ times:
    after_relation: 0.25
    after_pair: [2, 2.5]
    after_last_pair: [3, 3.5]
+   pre_question_mark: 0.1
+   question_mark: 0.2
    response: 2
 
 sizes:

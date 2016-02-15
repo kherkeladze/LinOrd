@@ -119,7 +119,7 @@ class LinOrdExperiment(object):
 		# show relation
 		times = self.show_pair(question)
 		self.clock.reset()
-		q_times = map(self.get_time, ['pre_question_mark', 'pre_question_mark'])
+		q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
 		[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
 
 		resp = event.waitKeys(maxWait=self.times['response'],

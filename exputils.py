@@ -74,6 +74,20 @@ class LinOrdExperiment(object):
 		self.create_stimuli()
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
+		self.num_trials = np.max(self.df['model'])
+
+	def show_all_trials(self):
+		trials_without_break = 0
+		self.present_break()
+		self.show_keymap()
+		for t in range(1, self.num_trials+1):
+			self.show_trial(t)
+			self.save_data()
+			trials_without_break += 1
+			if trials_without_break >= self.settings['przerwa_co_ile_modeli']:
+				self.present_break()
+				self.show_keymap()
+		core.quit()
 
 	def get_time(self, stim):
 		time = self.times[stim]

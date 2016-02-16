@@ -98,17 +98,17 @@ class LinOrdExperiment(object):
 			return time
 
 	def check_quit(self, key=None):
-	if self.quitopt['enable']:
-		if key == None:
-			key = event.getKeys()
-		if key == None or len(key) == 0:
-			return
-		if isinstance(key[0], tuple):
-			key = [k[0] for k in key]
-		if isinstance(key, tuple):
-			key, _ = key
-		if self.quitopt['button'] in key:
-			core.quit()
+		if self.quitopt['enable']:
+			if key == None:
+				key = event.getKeys()
+			if key == None or len(key) == 0:
+				return
+			if isinstance(key[0], tuple):
+				key = [k[0] for k in key]
+			if isinstance(key, tuple):
+				key, _ = key
+			if self.quitopt['button'] in key:
+				core.quit()
 
 	def present_break(self):
 		text = self.settings['tekst_przerwy']
@@ -119,7 +119,7 @@ class LinOrdExperiment(object):
 			text.draw()
 			self.window.flip()
 			k = event.getKeys()
-			self.check_quit(key=k)
+		self.check_quit(key=k)
 
 	def show_keymap(self):
 		args = {'units': 'deg', 'height': self.settings['sizes']['key_info']}

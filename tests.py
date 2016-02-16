@@ -6,7 +6,11 @@ from exputils import LinOrdExperiment
 window = visual.Window(monitor='testMonitor')
 
 exp = LinOrdExperiment(window, 'settings.yaml')
+exp.get_subject_id()
+exp.show_all_trials()
 
+
+# other tests
 exp.show_element('fix', 60)
 exp.show_element('', 25)
 

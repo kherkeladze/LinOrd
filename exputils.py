@@ -8,7 +8,7 @@ import random
 import numpy as np
 import pandas as pd
 
-from psychopy import visual, event, core
+from psychopy import visual, event, core, gui
 
 # TODOs:
 # - [x] test przerwa
@@ -48,7 +48,8 @@ class LinOrdExperiment(object):
 		self.clock = core.Clock()
 		self.current_trial = 0
 
-		self.subject_id = 'test_subject'
+		self.subject =  dict()
+		self.subject['id'] = 'test_subject'
 
 		self.letters = list('bcdfghjklmnprstwxz')
 		self.relations = ['>', '<']
@@ -351,9 +352,24 @@ class LinOrdExperiment(object):
 			index=range(0, self.trials.shape[0]))
 
 	def save_data(self):
-		fl = os.path.join('data', self.subject_id)
+		fl = os.path.join('data', self.subject['id'])
 		self.df.to_excel(fl + '.xls')
 		self.df.to_csv(fl + '.csv')
+
+	def get_subject_id(self):
+		myDlg = gui.Dlg(title="Subject Info", size = (800,600))
+		myDlg.addText('Informacje o osobie badanej')
+		myDlg.addField('ID:')
+		myDlg.addField('wiek:', 30)
+		myDlg.addField(u'płeć:', choices=[u'kobieta', u'mężczyzna'])
+		myDlg.show()  # show dialog and wait for OK or Cancel
+
+		if myDlg.OK:  # Ok was pressed
+			self.subject['id'] = myDlg.data[0]
+			self.subject['age'] = myDlg.data[1]
+			self.subject['sex'] = myDlg.data[2]
+		else:
+			core.quit()
 
 
 # stimuli

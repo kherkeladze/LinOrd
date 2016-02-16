@@ -1,14 +1,14 @@
 
 times:
-   element: 0.25
+   element: 0.75
    before_relation: 0.25
-   relation: 0.25
+   relation: 0.75
    after_relation: 0.25
-   after_pair: [2.5, 3]
-   after_last_pair: [5, 5.5]
+   after_pair: [3, 3.5]
+   after_last_pair: [6, 7]
    pre_question_mark: 0.1
    question_mark: 0.2
-   response: 3.5
+   response: 5
 
 sizes:
    letter: 2.5

@@ -20,6 +20,9 @@ fix_shape: 'circle'
 fix_between_pairs: True
 fix_during_wait: True
 
+isoluminant_relations: True
+iso_degs: [135, 315]
+
 # keys for yes/no (mapping is randomized)
 resp_keys: [f, j]
 

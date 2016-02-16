@@ -137,6 +137,12 @@ class LinOrdExperiment(object):
 		self.stim = {l: visual.TextStim(self.window, text=l.upper(), **args)
 			for l in self.letters + self.relations + ['?']}
 
+		# take care of isoluminant relations
+		if settings['isoluminant_relations']:
+			deg = random.sample(settings['iso_degs'], 2)
+			for r, d in zip(self.relations, deg):
+				exp.stim[r].setColor([0,d,1], colorSpace='dkl')
+
 		# fixation cross/circle
 		self.stim['fix'] = fix(self.window, height=self.settings['sizes']['fix_height'], 
 			width=self.settings['sizes']['fix_width'], shape=self.settings['fix_shape'])

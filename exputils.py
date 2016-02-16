@@ -75,7 +75,7 @@ class LinOrdExperiment(object):
 		self.create_stimuli()
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
-		self.num_trials = np.max(self.df['model'])
+		self.num_trials = int(np.max(self.trials['model']))
 
 	def show_all_trials(self):
 		trials_without_break = 0

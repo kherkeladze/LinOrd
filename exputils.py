@@ -139,10 +139,10 @@ class LinOrdExperiment(object):
 			for l in self.letters + self.relations + ['?']}
 
 		# take care of isoluminant relations
-		if settings['isoluminant_relations']:
-			deg = random.sample(settings['iso_degs'], 2)
+		if self.settings['isoluminant_relations']:
+			deg = random.sample(self.settings['iso_degs'], 2)
 			for r, d in zip(self.relations, deg):
-				exp.stim[r].setColor([0,d,1], colorSpace='dkl')
+				self.stim[r].setColor([0,d,1], colorSpace='dkl')
 
 		# fixation cross/circle
 		self.stim['fix'] = fix(self.window, height=self.settings['sizes']['fix_height'], 

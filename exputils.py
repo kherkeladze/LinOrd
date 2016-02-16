@@ -11,10 +11,11 @@ import pandas as pd
 from psychopy import visual, event, core
 
 # TODOs:
-# - [ ] test przerwa
-# - [ ] save output
-# - [ ] fill_df
-# - [ ] save_responses
+# - [x] test przerwa
+# - [x] add info on resp buttons to przerwa
+# - [x] save output
+# - [x] fill_df
+# - [x] save_responses
 # - [ ] copy marker sending from my proc
 # - [ ] add feedback to questions
 # - [ ] add save/nosave option
@@ -43,10 +44,6 @@ class LinOrdExperiment(object):
 		if self.quitopt['enable']:
 			self.resp_keys.append(self.quitopt['button'])
 
-		# dataframe
-		# self.df = create_empty_df(len(self.loads) * self.trials_per_load)
-		# self.df = self.df.set_index('trial', drop=True)
-
 		self.clock = core.Clock()
 		self.current_trial = 0
 
@@ -54,7 +51,6 @@ class LinOrdExperiment(object):
 
 		self.letters = list('bcdfghjklmnprstwxz')
 		self.relations = ['>', '<']
-
 
 		# wszystkie możliwe sekwencje
 		# w wierszach warunki, w kolumnach wersje
@@ -203,7 +199,6 @@ class LinOrdExperiment(object):
 		# show questions
 		time_and_resp = self.ask_questions(questions)
 		self.save_responses(trial, time_and_resp)
-		pass
 
 	def reverse_relation(self, relation):
 		if relation == '>':

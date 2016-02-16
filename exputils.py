@@ -33,6 +33,7 @@ class LinOrdExperiment(object):
 		    settings = yaml.load(f)
 	
 		self.times = s2frames(settings['times'], self.frame_time)
+		self.times['response'] = settings['times']['response']
 		self.settings = settings
 
 		self.resp_keys = settings['resp_keys']

@@ -14,6 +14,7 @@ sizes:
    letter: 2.5
    fix_height: 0.25
    fix_width: 0.1
+   key_info: 1.2
 
 fix_shape: 'circle'
 fix_between_pairs: True

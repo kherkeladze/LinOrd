@@ -96,12 +96,27 @@ class LinOrdExperiment(object):
 			core.quit()
 
 	def present_break(self):
-		text = visual.TextStim(text=self.settings['tekst_przerwy'])
+		text = self.settings['tekst_przerwy']
+		text = text.replace('\\n', '\n')
+		text = visual.TextStim(self.window, text=text)
 		k = False
 		while not k:
 			text.draw()
 			self.window.flip()
 			k = event.getKeys()
+			self.check_quit(key=k)
+
+	def show_keymap(self):
+		args = {'units': 'deg', 'height': self.settings['sizes']['key_info']}
+		show_map = {k: bool_to_pl(v)
+			for k, v in six.iteritems(self.resp_mapping)}
+		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
+			show_map['f'], show_map['j'])
+		stim = visual.TextStim(self.window, text=text, **args)
+		stim.draw()
+		self.window.flip()
+		k = event.waitKeys()
+		self.check_quit(key=k)
 
 	def create_stimuli(self):
 		args = {'units': 'deg', 'height': self.settings['sizes']['letter']}
@@ -124,6 +139,7 @@ class LinOrdExperiment(object):
 		assert len(elems) == len(times)
 
 		[self.show_element(el, tm) for el, tm in zip(elems, times)]
+		self.check_quit()
 
 	def show_element(self, elem, time):
 		if elem not in self.stim:
@@ -152,6 +168,7 @@ class LinOrdExperiment(object):
 							  keyList=self.resp_keys,
 					  		  timeStamped=self.clock)
 		# return response
+		self.check_quit(key=resp)
 		if isinstance(resp, list):
 			resp = resp[0]
 		return (times, resp)
@@ -181,6 +198,7 @@ class LinOrdExperiment(object):
 			else:
 				next_time = self.get_time('after_last_pair')
 				self.show_element('dur_wait', next_time)
+				self.check_quit()
 			# add to times and append to all_times
 			times += [next_time]
 			all_times.append(times)
@@ -360,3 +378,10 @@ def s2frames(time_in_seconds, frame_time):
 # for i in [[0,1], [2,3], [4,5]]:
 # 	pair = sequence[current_cond[i]]
 # 	print(pair[0], relation, pair[1])
+
+def bool_to_pl(b):
+	assert isinstance(b, bool)
+	if b:
+		return u'prawda'
+	else:
+		return u'fałsz'

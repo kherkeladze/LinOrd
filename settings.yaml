@@ -5,7 +5,7 @@ times:
    relation: 0.75
    after_relation: 0.25
    after_pair: [3, 3.5]
-   after_last_pair: [6, 7]
+   after_last_pair: [12, 13]
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
@@ -34,7 +34,7 @@ resp_keys: [f, j]
 # to mamy 4 warunki a do każdego 4 pakiety pytań (po 3)
 # w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
-repetitions: 3
+repetitions: 1
 condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)
 condition_columns: [0, 1] # obie sekwencje dla każdego warunku
 

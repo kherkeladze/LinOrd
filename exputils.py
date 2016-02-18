@@ -420,9 +420,9 @@ class LinOrdExperiment(object):
 		if self.send_triggers:
 			try:
 				from ctypes import windll
-				windll.InpOut32(self.port_code, 111)
+				windll.InpOut32(self.port_adress, 111)
 				core.wait(0.1)
-				windll.InpOut32(self.port_code, 111)
+				windll.InpOut32(self.port_adress, 111)
 			except:
 				warnings.warn('Could not send test trigger. :(')
 				self.send_triggers = False

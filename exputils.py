@@ -161,6 +161,13 @@ class LinOrdExperiment(object):
 			self.triggers['dur_wait_change'] = self.triggers['fixation'][1]
 			self.stim.update(dur_wait=self.stim['fix'])
 
+			change_color = np.array(self.settings['fix_change_color'])
+			change_color = (change_color / 255. - 0.5) * 2.
+			change_fix= fix(self.window, height=self.settings['sizes']['fix_height'],
+				width=self.settings['sizes']['fix_width'], shape=self.settings['fix_shape'],
+				color=change_color)
+			self.stim.update(dur_wait_change=change_fix)
+
 	def _show_pair(self, pair, times):
 		# show_pair can return randomized times
 		# elems = pair.split('')
@@ -227,17 +234,21 @@ class LinOrdExperiment(object):
 			pair = model[sequence[i]]
 			pair = ' '.join([pair[0], relation, pair[1]])
 			times = self.show_pair(pair)
-			if i is not [4,5]:
-				next_time = self.get_time('after_pair')
-				self.show_element('btw_pairs', next_time)
+			if i[0] is not 4:
+				next_time1 = self.get_time('after_pair')
+				next_time2 = 0
+				self.show_element('btw_pairs', next_time1)
 			else:
-				next_time = self.get_time('after_last_pair')
-				self.show_element('dur_wait', next_time)
+				next_time1 = self.get_time('after_last_pair')
+				next_time2 = self.get_time('fix_highlights')
+				next_time1 -= next_time2
+				self.show_element('dur_wait', next_time1)
+				self.show_element('dur_wait_change', next_time2)
 				self.check_quit()
 			# add to times and append to all_times
-			times += [next_time]
+			times += [next_time1, next_time2]
 			all_times.append(times)
-		return np.array(times)
+		return np.array(all_times)
 
 	def show_trial(self, trial):
 		# get model and relation

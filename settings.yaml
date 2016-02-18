@@ -13,7 +13,8 @@ times:
    relation: 0.75
    after_relation: 0.25
    after_pair: [3, 3.5]
-   after_last_pair: [12, 13]
+   after_last_pair: [7.5, 8.5]
+   fix_highlights: [0.25, 0.6]
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
@@ -27,6 +28,7 @@ sizes:
 fix_shape: 'circle'
 fix_between_pairs: True
 fix_during_wait: True
+fix_change_color: [255, 0, 0]
 
 isoluminant_relations: True
 iso_degs: [135, 315]

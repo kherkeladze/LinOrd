@@ -494,10 +494,7 @@ def s2frames(time_in_seconds, frame_time):
 
 def bool_to_pl(b):
 	assert isinstance(b, bool)
-	if b:
-		return u'prawda'
-	else:
-		return u'fałsz'
+	return ['NIE', 'TAK'][int(b)]
 
 
 class Instructions:

@@ -155,7 +155,10 @@ class LinOrdExperiment(object):
 			width=self.settings['sizes']['fix_width'], shape=self.settings['fix_shape'])
 		if self.settings['fix_between_pairs']:
 			self.stim.update(btw_pairs=self.stim['fix'])
+			self.triggers['btw_pairs'] = self.triggers['fixation'][0]
 		if self.settings['fix_during_wait']:
+			self.triggers['dur_wait'] = self.triggers['fixation'][0]
+			self.triggers['dur_wait_change'] = self.triggers['fixation'][1]
 			self.stim.update(dur_wait=self.stim['fix'])
 
 	def _show_pair(self, pair, times):
@@ -169,11 +172,16 @@ class LinOrdExperiment(object):
 		self.check_quit()
 
 	def show_element(self, elem, time):
+		elem_show = True
 		if elem not in self.stim:
-			elem = False
+			elem_show = False
 		# draw element
+		if elem_show:
+			self.set_trigger(elem)
 		for f in range(time):
-			if elem:
+			if elem_show:
+				if f == 2:
+					self.set_trigger(0)
 				self.stim[elem].draw()
 			self.window.flip()
 

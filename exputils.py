@@ -259,9 +259,16 @@ class LinOrdExperiment(object):
 		self.filldf(trial, model, sequence, relation, questions)
 
 		# show premises
+		if self.send_triggers:
+			for el in ['letter', 'relation']:
+				self.triggers[el] = self.settings['triggers'][el]
 		premise_times = self.show_premises(model, sequence, relation)
 
 		# show questions
+		if self.send_triggers:
+			add = self.settings['triggers']['question_add']
+			for el in ['letter', 'relation']:
+				self.triggers[el] = self.settings['triggers'][el] + add
 		time_and_resp = self.ask_questions(questions)
 		self.save_responses(trial, time_and_resp)
 

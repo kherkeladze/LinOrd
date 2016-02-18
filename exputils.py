@@ -78,6 +78,7 @@ class LinOrdExperiment(object):
 		self.triggers = self.settings['triggers']
 		self.set_up_ports()
 
+		self.isolum = dict()
 		self.create_stimuli()
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
@@ -149,6 +150,7 @@ class LinOrdExperiment(object):
 			deg = random.sample(self.settings['iso_degs'], 2)
 			for r, d in zip(self.relations, deg):
 				self.stim[r].setColor([0,d,1], colorSpace='dkl')
+				self.isolum[r] = d
 
 		# fixation cross/circle
 		self.stim['fix'] = fix(self.window, height=self.settings['sizes']['fix_height'], 

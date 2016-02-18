@@ -168,6 +168,14 @@ class LinOrdExperiment(object):
 				color=change_color)
 			self.stim.update(dur_wait_change=change_fix)
 
+		# feedback circles
+		feedback_colors = (np.array([[0,147,68], [190, 30, 45]],
+			dtype='float') / 255 - 0.5) * 2
+		self.stim['feedback_correct'] = fix(self.window, height=self.settings[
+			'feedback_circle_radius'], color=feedback_colors[0,:])
+		self.stim['feedback_incorrect'] = fix(self.window, height=self.\
+			settings['feedback_circle_radius'], color=feedback_colors[1,:])
+
 	def _show_pair(self, pair, times):
 		# show_pair can return randomized times
 		# elems = pair.split('')
@@ -250,7 +258,7 @@ class LinOrdExperiment(object):
 			all_times.append(times)
 		return np.array(all_times)
 
-	def show_trial(self, trial):
+	def show_trial(self, trial, feedback=False):
 		# get model and relation
 		model, sequence, relation = self.get_model(trial)
 
@@ -271,6 +279,12 @@ class LinOrdExperiment(object):
 				self.triggers[el] = self.settings['triggers'][el] + add
 		time_and_resp = self.ask_questions(questions)
 		self.save_responses(trial, time_and_resp)
+		if feedback:
+			resp = self.df.loc[trial, 'ifcorrect']
+			circ = self.stim['feedback_' + ['in',''][resp] + 'correct']
+			# CHANGE to show_elem
+			circ.draw()
+			self.window.flip()
 
 	def reverse_relation(self, relation):
 		if relation == '>':

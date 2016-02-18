@@ -11,13 +11,10 @@ import pandas as pd
 from psychopy import visual, event, core, gui
 
 # TODOs:
-# - [x] test przerwa
-# - [x] add info on resp buttons to przerwa
-# - [x] save output
-# - [x] fill_df
-# - [x] save_responses
-# - [ ] copy marker sending from my proc
-# - [ ] add feedback to questions
+# - [x] copy marker sending from my proc
+# - [x] add feedback to questions
+# - [ ] test feedback
+# - [ ] test markers
 # - [ ] add save/nosave option
 
 
@@ -153,7 +150,7 @@ class LinOrdExperiment(object):
 				self.isolum[r] = d
 
 		# fixation cross/circle
-		self.stim['fix'] = fix(self.window, height=self.settings['sizes']['fix_height'], 
+		self.stim['fix'] = fix(self.window, height=self.settings['sizes']['fix_height'],
 			width=self.settings['sizes']['fix_width'], shape=self.settings['fix_shape'])
 		if self.settings['fix_between_pairs']:
 			self.stim.update(btw_pairs=self.stim['fix'])

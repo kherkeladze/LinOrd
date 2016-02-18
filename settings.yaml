@@ -7,6 +7,8 @@ triggers:
    question_add: 2
    question_mark: 5
 
+# pre_question_mark suggest the intent was
+# to show the question mark before question :)
 times:
    element: 0.75
    before_relation: 0.25

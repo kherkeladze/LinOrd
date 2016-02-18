@@ -72,6 +72,12 @@ class LinOrdExperiment(object):
 			len(self.settings['condition_columns']), 6)
 		self.all_questions = [[[0,1], [1,2], [2,3]], [[0,2], [1,3]], [[0,3]]]
 
+		# port stuff
+		self.send_triggers = self.settings['send_triggers']
+		self.port_adress = self.settings['port_adress']
+		self.triggers = self.settings['triggers']
+		self.set_up_ports()
+
 		self.create_stimuli()
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
@@ -370,6 +376,38 @@ class LinOrdExperiment(object):
 			self.subject['sex'] = myDlg.data[2]
 		else:
 			core.quit()
+
+	def set_up_ports(self):
+		if self.send_triggers:
+			try:
+				from ctypes import windll
+				windll.InpOut32(self.port_code, 111)
+				core.wait(0.1)
+				windll.InpOut32(self.port_code, 111)
+			except:
+				warnings.warn('Could not send test trigger. :(')
+				self.send_triggers = False
+
+	def send_trigger(self, code):
+		windll.inpout32.Out32(self.port_address, code)
+
+	def set_trigger(self, event):
+		if self.send_triggers:
+			if isinstance(event, int):
+				self.window.callOnFlip(self.send_trigger, event)
+			else:
+				if event in self.letters:
+					trig = self.triggers['letter']
+					self.window.callOnFlip(self.send_trigger, trig)
+				elif event in self.letters:
+					trig = self.triggers['relation']
+					self.window.callOnFlip(self.send_trigger, trig)
+				elif event in self.triggers:
+					trig = self.triggers[event]
+					self.window.callOnFlip(self.send_trigger, trig)
+				elif event == '?':
+					trig = self.triggers[question_mark]
+					self.window.callOnFlip(self.send_trigger, trig)
 
 
 # stimuli

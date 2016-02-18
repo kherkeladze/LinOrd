@@ -1,3 +1,11 @@
+send_triggers: False
+port_adress: x0H43
+triggers:
+   fixation: [11, 12]
+   letter: 1
+   relation: 2
+   question_add: 2
+   question_mark: 5
 
 times:
    element: 0.75

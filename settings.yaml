@@ -7,8 +7,12 @@ triggers:
    question_add: 2
    question_mark: 5
 
-# pre_question_mark suggest the intent was
-# to show the question mark before question :)
+present_sequential: False
+elem_y_pos: [-2.5, 0, 2.5]
+
+# only element time is used if presentation is not sequential
+# before_relation, relation and after_relation are not used
+# then
 times:
    element: 0.75
    before_relation: 0.25

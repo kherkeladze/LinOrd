@@ -30,6 +30,9 @@ class LinOrdExperiment(object):
 		with open(file_name, 'r') as f:
 		    settings = yaml.load(f)
 	
+
+		self.sequential = settings['present_sequential']
+
 		self.times = s2frames(settings['times'], self.frame_time)
 		self.times['response'] = settings['times']['response']
 		self.settings = settings
@@ -184,10 +187,16 @@ class LinOrdExperiment(object):
 		# show_pair can return randomized times
 		# elems = pair.split('')
 		elems = list(pair)
-		elems = [x.lower() for x in elems]
-		assert len(elems) == len(times)
-
-		[self.show_element(el, tm) for el, tm in zip(elems, times)]
+		if self.sequential:
+			elems = [x.lower() for x in elems]
+			assert len(elems) == len(times)
+			[self.show_element(el, tm) for el, tm in zip(elems, times)]
+		else:
+			# set position of left and right letter
+			elems = [x.lower() for x in elems if x != ' ']
+			for i in [0, 2]:
+				self.stim[elems[i]].pos = [self.settings['elem_y_pos'][i], 0.]
+			self.show_element(elems, times[0])
 		self.check_quit()
 
 	def show_element(self, elem, time):
@@ -209,9 +218,12 @@ class LinOrdExperiment(object):
 			self.window.flip()
 
 	def show_pair(self, pair):
-		events = ['element', 'before_relation', 'relation',
-			'after_relation', 'element']
-		times = map(self.get_time, events)
+		if self.sequential:
+			events = ['element', 'before_relation', 'relation',
+				'after_relation', 'element']
+			times = map(self.get_time, events)
+		else:
+			times = [self.get_time('element')]
 		self._show_pair(pair, times)
 		return times
 

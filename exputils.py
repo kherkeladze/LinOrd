@@ -287,14 +287,13 @@ class LinOrdExperiment(object):
 			add = self.settings['triggers']['question_add']
 			for el in ['letter', 'relation']:
 				self.triggers[el] = self.settings['triggers'][el] + add
+				if feedback:
+					resp = self.df.loc[trial, 'ifcorrect']
+					circ = 'feedback_' + ['in',''][resp] + 'correct'
+					self.show_element(circ, 25)	
+					core.wait(0.25)
 		time_and_resp = self.ask_questions(questions)
 		self.save_responses(trial, time_and_resp)
-		if feedback:
-			resp = self.df.loc[trial, 'ifcorrect']
-			circ = self.stim['feedback_' + ['in',''][resp] + 'correct']
-			# CHANGE to show_elem
-			circ.draw()
-			self.window.flip()
 
 	def reverse_relation(self, relation):
 		if relation == '>':

@@ -28,8 +28,7 @@ class LinOrdExperiment(object):
 		# load settings
 		file_name = os.path.join(os.getcwd(), config_file)
 		with open(file_name, 'r') as f:
-		    settings = yaml.load(f)
-	
+			settings = yaml.load(f)
 
 		self.sequential = settings['present_sequential']
 

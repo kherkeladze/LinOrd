@@ -12,8 +12,9 @@ import pandas as pd
 from psychopy import visual, event, core, gui
 
 # TODOs:
-# - [x] copy marker sending from my proc
-# - [x] add feedback to questions
+# - [ ] when not seq display - present question mark
+#       along with relation when asking questions
+# - [ ] configurable feedback time
 # - [ ] test feedback
 # - [ ] test markers
 # - [ ] add save/nosave option

@@ -431,15 +431,16 @@ class LinOrdExperiment(object):
 		if self.send_triggers:
 			try:
 				from ctypes import windll
-				windll.InpOut32(self.port_adress, 111)
+				windll.inpout32.Out32(self.port_adress, 111)
 				core.wait(0.1)
-				windll.InpOut32(self.port_adress, 111)
+				windll.inpout32.Out32(self.port_adress, 0)
+				self.inpout32 = windll.inpout32
 			except:
 				warnings.warn('Could not send test trigger. :(')
 				self.send_triggers = False
 
 	def send_trigger(self, code):
-		windll.inpout32.Out32(self.port_address, code)
+		self.inpout32.Out32(self.port_address, code)
 
 	def set_trigger(self, event):
 		if self.send_triggers:
@@ -449,7 +450,7 @@ class LinOrdExperiment(object):
 				if event in self.letters:
 					trig = self.triggers['letter']
 					self.window.callOnFlip(self.send_trigger, trig)
-				elif event in self.letters:
+				elif event in self.relations:
 					trig = self.triggers['relation']
 					self.window.callOnFlip(self.send_trigger, trig)
 				elif event in self.triggers:

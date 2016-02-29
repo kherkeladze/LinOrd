@@ -82,6 +82,11 @@ class LinOrdExperiment(object):
 		self.create_df()
 		self.num_trials = int(np.max(self.trials['model']))
 
+	def set_window(self, window):
+		self.window = window
+		for s in self.stim.values():
+			s.win = window
+
 	def show_all_trials(self):
 		trials_without_break = 0
 		self.show_keymap()

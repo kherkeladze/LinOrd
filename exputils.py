@@ -194,7 +194,7 @@ class LinOrdExperiment(object):
 			# set position of left and right letter
 			elems = [x.lower() for x in elems if x != ' ']
 			for i in [0, 2]:
-				self.stim[elems[i]].pos = [self.settings['elem_y_pos'][i], 0.]
+				self.stim[elems[i]].pos = [self.settings['elem_x_pos'][i], 0.]
 			self.show_element(elems, times[0])
 		self.check_quit()
 

@@ -8,7 +8,7 @@ triggers:
    question_mark: 5
 
 present_sequential: False
-elem_y_pos: [-2.5, 0, 2.5]
+elem_x_pos: [-2.5, 0, 2.5]
 
 # only element time is used if presentation is not sequential
 # before_relation, relation and after_relation are not used

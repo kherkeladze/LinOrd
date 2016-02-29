@@ -192,16 +192,20 @@ class LinOrdExperiment(object):
 
 	def show_element(self, elem, time):
 		elem_show = True
-		if elem not in self.stim:
+		is_list = isinstance(elem, list)
+		if not is_list and elem not in self.stim:
 			elem_show = False
 		# draw element
 		if elem_show:
-			self.set_trigger(elem)
+			if not is_list:
+				elem = [elem]
+			self.set_trigger(elem[0])
 		for f in range(time):
 			if elem_show:
 				if f == 2:
 					self.set_trigger(0)
-				self.stim[elem].draw()
+				for el in elem:
+					self.stim[el].draw()
 			self.window.flip()
 
 	def show_pair(self, pair):

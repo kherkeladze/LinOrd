@@ -240,7 +240,7 @@ class LinOrdExperiment(object):
 			print('nothing yet')
 		return output
 
-	def show_premises(self, model, sequence, relation):
+	def show_premises(self, model, sequence, relation, with_wait=True):
 		all_times = list()
 		if isinstance(model, str):
 			model = list(model)
@@ -254,16 +254,18 @@ class LinOrdExperiment(object):
 				next_time1 = self.get_time('after_pair')
 				next_time2 = 0
 				self.show_element('btw_pairs', next_time1)
-			else:
+			elif with_wait:
 				next_time1 = self.get_time('after_last_pair')
 				next_time2 = self.get_time('fix_highlights')
 				next_time1 -= next_time2
 				self.show_element('dur_wait', next_time1)
 				self.show_element('dur_wait_change', next_time2)
 				self.check_quit()
+			else:
+				next_time1, next_time2 = 0, 0
 			# add to times and append to all_times
 			times += [next_time1, next_time2]
-			all_times.append(times)
+		all_times.append(times)
 		return np.array(all_times)
 
 	def show_trial(self, trial, feedback=False):

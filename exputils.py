@@ -254,15 +254,6 @@ class LinOrdExperiment(object):
 			resp = resp[0]
 		return (times, resp)
 
-	def ask_questions(self, questions, feedback=None):
-		output = list()
-		for q in questions:
-			# pre-question time?
-			output.append(self.ask_question(q))
-		if feedback is not None:
-			print('nothing yet')
-		return output
-
 	def show_premises(self, model, sequence, relation, with_wait=True):
 		all_times = list()
 		if isinstance(model, str):
@@ -312,17 +303,25 @@ class LinOrdExperiment(object):
 				self.triggers[el] = self.settings['triggers'][el]
 		premise_times = self.show_premises(model, sequence, relation)
 
-		# show questions
+		# change triggers for questions
 		if self.send_triggers:
 			add = self.settings['triggers']['question_add']
 			for el in ['letter', 'relation']:
 				self.triggers[el] = self.settings['triggers'][el] + add
-				if feedback:
-					resp = self.df.loc[trial, 'ifcorrect']
-					circ = 'feedback_' + ['in',''][resp] + 'correct'
-					self.show_element(circ, 25)	
-					core.wait(0.25)
-		time_and_resp = self.ask_questions(questions)
+
+		# show questions
+		time_and_resp = list()
+		for q in questions:
+			time_and_resp.append(self.ask_question(q))
+			if feedback:
+				resp = self.df.loc[trial, 'ifcorrect']
+				if np.isnan(resp):
+					resp = 0
+				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
+				print(circ)
+				self.show_element(circ, 25)	
+				core.wait(0.25)
+				self.window.flip()
 		self.save_responses(trial, time_and_resp)
 
 	def reverse_relation(self, relation):

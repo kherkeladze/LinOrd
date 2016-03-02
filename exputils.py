@@ -12,10 +12,7 @@ import pandas as pd
 from psychopy import visual, event, core, gui
 
 # TODOs:
-# - [ ] when not seq display - present question mark
-#       along with relation when asking questions
 # - [ ] configurable feedback time
-# - [ ] test feedback
 # - [ ] test markers
 # - [ ] add save/nosave option
 
@@ -318,7 +315,6 @@ class LinOrdExperiment(object):
 				if np.isnan(resp):
 					resp = 0
 				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
-				print(circ)
 				self.show_element(circ, 25)	
 				core.wait(0.25)
 				self.window.flip()

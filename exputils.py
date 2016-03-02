@@ -194,7 +194,8 @@ class LinOrdExperiment(object):
 		else:
 			# set position of left and right letter
 			elems = [x.lower() for x in elems if x != ' ']
-			for i in [0, 2]:
+			itr = [0,2,3] if len(elems)==4 else [0, 2]
+			for i in itr:
 				self.stim[elems[i]].pos = [self.settings['elem_x_pos'][i], 0.]
 			self.show_element(elems, times[0])
 		self.check_quit()
@@ -229,6 +230,9 @@ class LinOrdExperiment(object):
 
 	def ask_question(self, question):
 		# show relation
+		if not self.sequential:
+			question += ' ?'
+
 		times = self.show_pair(question)
 		self.clock.reset()
 		q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])

@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
 # test LinOrd
+from __future__ import division
 import os
-from psychopy import core, visual, monitors
+import random
+from psychopy import core, visual, monitors, event
 from exputils import LinOrdExperiment, Instructions
 
 participantDistance = 60
@@ -17,7 +19,7 @@ else:
 
 # create temporary window
 window = visual.Window(monitor=monitor, units="deg",
-	fullscr=False, size=[1200,800])
+    fullscr=False, size=[1200,800])
 
 exp = LinOrdExperiment(window, 'settings.yaml')
 exp.get_subject_id()
@@ -32,33 +34,53 @@ waitText.draw(); window.flip()
 instr_dir = os.path.join(os.getcwd(), 'instr')
 instr = os.listdir(instr_dir)
 if exp.isolum['>'] == 135:
-    del instr[1]
+    todel = [1,3,5,8]
+    todel.reverse()
+    for d in todel:
+        del instr[d]
 else:
-    del instr[0]
+    todel = [0,2,4,7]
+    todel.reverse()
+    for d in todel:
+        del instr[d]
+
 if exp.resp_mapping['f']:
-    del instr[4]
+    del instr[6]
 else:
-    del instr[3]
+    del instr[5]
 instr = [os.path.join('instr', i) for i in instr]
 
 # add examples to instructions
-def example():
+def example1():
+    exp.show_pair('D > B')
+    core.wait(0.35)
+
+def example2():
     exp.show_premises('BGPZ', [0,1,1,2,2,3],
         '>', with_wait=False)
-    core.wait(0.5)
+    core.wait(0.35)
+    waitText.setText('poprawny model to:\nB > G > P > Z')
+    waitText.draw()
+    window.flip()
+    event.waitKeys()
 
-instr.insert(1, example)
+def example3():
+    exp.show_trial(random.randint(4, exp.df.shape[0]/3-1))
+
+instr.insert(1, example1)
+instr.insert(4, example2)
+instr.insert(8, example3)
 instr = Instructions(window, instr)
-instr.present(stop=6)
+instr.present(stop=10)
 
 # training
-for i in range(1, 16):
+for i in range(1, 8):
     exp.show_trial(i, feedback=True)
     if i > 1 and exp.df.loc[i, 'ifcorrect'] == 0:
         exp.show_keymap()
 exp.create_trials(repetitions=exp.settings['repetitions'])
 
-instr.present(stop=7)
+instr.present(stop=11)
 
 exp.show_all_trials()
 instr.present()

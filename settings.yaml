@@ -14,13 +14,14 @@ elem_x_pos: [-2.5, 0, 2.5, 5]
 # before_relation, relation and after_relation are not used
 # then
 times:
+   pre_pair: [0.6, 1.2]
    element: 0.75
    before_relation: 0.25
    relation: 0.75
    after_relation: 0.25
-   after_pair: [1.5, 2.5]
+   after_pair: 0.2
    after_last_pair: [4.5, 5.5]
-   fix_highlights: [0.25, 0.6]
+   fix_highlights: [0.5, 1.]
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
@@ -35,7 +36,7 @@ feedback_circle_radius: 7
 fix_shape: 'circle'
 fix_between_pairs: True
 fix_during_wait: True
-fix_change_color: [255, 0, 0]
+fix_change_color: [191, 30, 45]
 
 isoluminant_relations: True
 iso_degs: [135, 315]

@@ -233,10 +233,17 @@ class LinOrdExperiment(object):
 		if not self.sequential:
 			question += ' ?'
 
+		# pre-stim time
+		time1 = self.get_time('pre_pair')
+		self.show_element('btw_pairs', time1)
+
+		# show pair
 		times = self.show_pair(question)
 		self.clock.reset()
-		q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
-		[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
+		times = [time1] + times
+		if self.sequential:
+			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
+			[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
 
 		resp = event.waitKeys(maxWait=self.times['response'],
 							  keyList=self.resp_keys,
@@ -265,7 +272,14 @@ class LinOrdExperiment(object):
 		for i in [[0,1], [2,3], [4,5]]:
 			pair = model[sequence[i]]
 			pair = ' '.join([pair[0], relation, pair[1]])
+
+			# pre-stim time
+			time1 = self.get_time('pre_pair')
+			self.show_element('btw_pairs', time1)
+
+			# show pair
 			times = self.show_pair(pair)
+			times = [time1] + times
 			if i[0] is not 4:
 				next_time1 = self.get_time('after_pair')
 				next_time2 = 0

@@ -52,7 +52,7 @@ resp_keys: [f, j]
 # to mamy 4 warunki a do każdego 4 pakiety pytań (po 3)
 # w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
-repetitions: 1
+repetitions: 5
 condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)
 condition_columns: [0, 1] # obie sekwencje dla każdego warunku
 

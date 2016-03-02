@@ -398,7 +398,7 @@ class LinOrdExperiment(object):
 		cnd_shp = self.conditions.shape
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
 			for mcol in range(cnd_shp[1]) for qtp in range(3)
-			for inv in range(2) for yes in range(2)]
+			for inv in range(2) for yes in range(2)] * repetitions
 		return np.array(mat)
 
 	def create_trials(self, repetitions=1):

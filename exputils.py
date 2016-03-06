@@ -12,6 +12,7 @@ import pandas as pd
 from psychopy import visual, event, core, gui
 
 # TODOs:
+# - [ ] resolve pre-relation time and pre-question time?
 # - [ ] configurable feedback time
 # - [ ] test markers
 # - [ ] add save/nosave option
@@ -332,6 +333,9 @@ class LinOrdExperiment(object):
 		model = np.asarray(model)
 
 		q_pair = random.sample(self.all_questions[distance], 1)[0]
+		# sort pair to be in model order:
+		q_pair.sort()
+
 		if reverse:
 			relation = self.reverse_relation(relation)
 			q_pair.reverse()
@@ -355,7 +359,7 @@ class LinOrdExperiment(object):
 
 		model = random.sample(self.letters, 4)
 		relation = random.sample(self.relations, 1)[0]
-		ii, jj = trial_df.iloc[0, [1,2]]
+		ii, jj = trial_df.iloc[0, [1,2]] # CHECK - why zero?
 		sequence = self.conditions[ii, jj, :]
 		return model, sequence, relation
 
@@ -375,20 +379,18 @@ class LinOrdExperiment(object):
 			self.df.loc[ind, 'question_reversed'] = trial_df.loc[ind, 'inverted_relation']
 			self.df.loc[ind, 'iftrue'] = trial_df.loc[ind, 'yesanswer']
 
-	def save_responses(self, trial, time_and_resp):
-		inds = np.where(self.trials['model'] == trial)[0]
-		trial_df = self.trials.loc[inds, :]
-		for i, elems in enumerate(time_and_resp):
-			_, resp = elems
-			if resp is not None:
-				self.df.loc[inds[i], 'answer'] = int(self.resp_mapping[resp[0]])
-				self.df.loc[inds[i], 'ifcorrect'] = int(self.resp_mapping[resp[0]] == \
-					self.df.loc[inds[i], 'iftrue'])
-				self.df.loc[inds[i], 'RT'] = resp[1]
-			else:
-				self.df.loc[inds[i], 'answer'] = np.nan
-				self.df.loc[inds[i], 'ifcorrect'] = 0
-				self.df.loc[inds[i], 'RT'] = np.nan
+	def save_responses(self, trial, question_num, time_and_resp):
+		ind = np.where(self.trials['model'] == trial)[0][question_num]
+		_, resp = time_and_resp
+		if resp is not None:
+			self.df.loc[ind, 'answer'] = int(self.resp_mapping[resp[0]])
+			self.df.loc[ind, 'ifcorrect'] = int(self.resp_mapping[resp[0]] == \
+				self.df.loc[ind, 'iftrue'])
+			self.df.loc[ind, 'RT'] = resp[1]
+		else:
+			self.df.loc[ind, 'answer'] = np.nan
+			self.df.loc[ind, 'ifcorrect'] = 0
+			self.df.loc[ind, 'RT'] = np.nan
 
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape

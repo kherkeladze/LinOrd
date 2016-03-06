@@ -319,7 +319,7 @@ class LinOrdExperiment(object):
 				self.show_element(circ, 25)	
 				core.wait(0.25)
 				self.window.flip()
-		self.save_responses(trial, time_and_resp)
+			self.save_responses(trial, time_and_resp)
 
 	def reverse_relation(self, relation):
 		if relation == '>':
@@ -334,7 +334,7 @@ class LinOrdExperiment(object):
 
 		q_pair = random.sample(self.all_questions[distance], 1)[0]
 		# sort pair to be in model order:
-		q_pair.sort()
+		# q_pair.sort()
 
 		if reverse:
 			relation = self.reverse_relation(relation)
@@ -359,7 +359,7 @@ class LinOrdExperiment(object):
 
 		model = random.sample(self.letters, 4)
 		relation = random.sample(self.relations, 1)[0]
-		ii, jj = trial_df.iloc[0, [1,2]] # CHECK - why zero?
+		ii, jj = trial_df.iloc[0, [1,2]]
 		sequence = self.conditions[ii, jj, :]
 		return model, sequence, relation
 

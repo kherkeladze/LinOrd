@@ -73,11 +73,16 @@ instr.insert(8, example3)
 instr = Instructions(window, instr)
 instr.present(stop=10)
 
+orig_subj_id = exp.subject['id']
+exp.subject['id'] += '_training'
 # training
 for i in range(1, 8):
     exp.show_trial(i, feedback=True)
+    exp.save_data()
     if i > 1 and exp.df.loc[i, 'ifcorrect'] == 0:
         exp.show_keymap()
+
+exp.subject['id'] = orig_subj_id
 exp.create_trials(repetitions=exp.settings['repetitions'])
 
 instr.present(stop=11)

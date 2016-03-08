@@ -308,9 +308,8 @@ class LinOrdExperiment(object):
 				self.triggers[el] = self.settings['triggers'][el] + add
 
 		# show questions
-		time_and_resp = list()
-		for q in questions:
-			time_and_resp.append(self.ask_question(q))
+		for q_num, q in enumerate(questions):
+			time_and_resp = self.ask_question(q)
 			if feedback:
 				resp = self.df.loc[trial, 'ifcorrect']
 				if np.isnan(resp):
@@ -319,7 +318,7 @@ class LinOrdExperiment(object):
 				self.show_element(circ, 25)	
 				core.wait(0.25)
 				self.window.flip()
-			self.save_responses(trial, time_and_resp)
+			self.save_responses(trial, q_num, time_and_resp)
 
 	def reverse_relation(self, relation):
 		if relation == '>':

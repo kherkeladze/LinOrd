@@ -20,3 +20,4 @@ for q in qst:
 	print(q)
 exp.filldf(1, 'ABCD', [[0,1],[1,2],[2,3]], '<', qst)
 print(exp.df.head(10))
+print(exp.trials.head(10))

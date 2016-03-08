@@ -400,6 +400,7 @@ class LinOrdExperiment(object):
 
 	def create_trials(self, repetitions=1):
 		mat = self._create_combinations_matrix(repetitions=repetitions)
+		np.random.shuffle(mat)
 		nrow = mat.shape[0]
 		df = pd.DataFrame(columns=['model', 'model_row', 'model_col',
 			'question_distance', 'inverted_relation', 'yesanswer'],

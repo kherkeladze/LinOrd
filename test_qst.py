@@ -1,12 +1,13 @@
+from __future__ import print_function
 import os
 from exputils import LinOrdExperiment
 from psychopy import visual
 
-os.chdir(r'D:\proj\LinOrd')
+os.chdir(r'E:\PROJ\EXP\LinOrd')
 win = visual.Window(monitor='testMonitor')
 exp = LinOrdExperiment(win, 'settings.yaml')
 df = exp.create_trials()
-df.head(10)
+print(df.head(10))
 
 for i in range(3):
 	qst = exp.get_questions('ABCD', '<', i)

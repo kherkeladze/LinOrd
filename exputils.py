@@ -431,6 +431,41 @@ class LinOrdExperiment(object):
 			self.df.loc[ind, 'ifcorrect'] = 0
 			self.df.loc[ind, 'RT'] = np.nan
 
+	def _create_combinations_matrix(self, repetitions=1):
+		cnd_shp = self.conditions.shape
+		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
+			for mcol in range(cnd_shp[1]) for qtp in range(3)
+			for inv in range(2) for yes in range(2)] * repetitions
+		return np.array(mat)
+
+	def create_trials(self, repetitions=1):
+		mat = self._create_combinations_matrix(repetitions=repetitions)
+		np.random.shuffle(mat)
+		nrow = mat.shape[0]
+		df = pd.DataFrame(columns=['model', 'model_row', 'model_col',
+			'question_distance', 'inverted_relation', 'yesanswer'],
+			index=range(0, nrow))
+		df = df.fillna(0)
+		df_row = 0
+		modelnum = 0
+		while nrow > 0:
+			modelnum += 1
+			choose_model = random.randint(0, nrow-1)
+			model = mat[choose_model, 0:2]
+			same_model = np.where(np.all(mat[:, 0:2] == model, axis=1))[0]
+			questions = mat[same_model, 2:]
+			rm_row = list()
+			question_order = random.sample(range(3), 3)
+			for q in question_order:
+				this_question = np.where(questions[:,0] == q)[0]
+				pick_question = random.sample(list(this_question), 1)[0]
+				df.iloc[df_row,:] = np.hstack([modelnum, model, questions[pick_question, :]])
+				rm_row.append(same_model[pick_question])
+				df_row += 1
+			mat = np.delete(mat, rm_row, axis=0)
+			nrow = mat.shape[0]
+		return df
+
 	def create_df(self):
 		self.df = pd.DataFrame(columns=['trial', 'model',
 			'show_order', 'relation', 'condition', 'question',

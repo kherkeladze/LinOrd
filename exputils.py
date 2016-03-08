@@ -144,7 +144,7 @@ class LinOrdExperiment(object):
 
 		# show questions
 		time_and_resp = list()
-		for q in questions:
+		for q_num, q in enumerate(questions):
 			time_and_resp.append(self.ask_question(q))
 			if feedback:
 				resp = self.df.loc[trial, 'ifcorrect']
@@ -154,7 +154,7 @@ class LinOrdExperiment(object):
 				self.show_element(circ, 25)	
 				core.wait(0.25)
 				self.window.flip()
-			self.save_responses(trial, time_and_resp)
+			self.save_responses(trial, q_num, time_and_resp)
 		finish_time = self.get_time('after_last_question')
 		self.show_element('btw_pairs', finish_time)
 

@@ -143,9 +143,8 @@ class LinOrdExperiment(object):
 				self.triggers[el] = self.settings['triggers'][el] + add
 
 		# show questions
-		time_and_resp = list()
 		for q_num, q in enumerate(questions):
-			time_and_resp.append(self.ask_question(q))
+			time_and_resp = self.ask_question(q)
 			if feedback:
 				resp = self.df.loc[trial, 'ifcorrect']
 				if np.isnan(resp):

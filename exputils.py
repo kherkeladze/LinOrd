@@ -155,6 +155,8 @@ class LinOrdExperiment(object):
 				core.wait(0.25)
 				self.window.flip()
 			self.save_responses(trial, time_and_resp)
+		finish_time = self.get_time('after_last_question')
+		self.show_element('btw_pairs', finish_time)
 
 	def show_premises(self, model, sequence, relation, with_wait=True):
 		all_times = list()

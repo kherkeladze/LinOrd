@@ -21,6 +21,7 @@ times:
    after_relation: 0.25
    after_pair: 0.2
    after_last_pair: [4.5, 5.5]
+   after_last_question: [1.5, 2.5]
    fix_highlights: [0.5, 1.]
    pre_question_mark: 0.1
    question_mark: 0.2

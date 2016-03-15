@@ -146,9 +146,9 @@ class LinOrdExperiment(object):
 		for q_num, q in enumerate(questions):
 			time_and_resp = self.ask_question(q)
 			if feedback:
-				resp = self.df.loc[trial, 'ifcorrect']
-				if np.isnan(resp):
-					resp = 0
+				row = (trial - 1) * 3 + q_num
+				resp = self.df.loc[row, 'iftrue'] == self.resp_mapping[\
+					time_and_resp[1][0]]
 				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
 				self.show_element(circ, 25)	
 				core.wait(0.25)

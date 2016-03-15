@@ -7,7 +7,7 @@ triggers:
    question_add: 2
    question_mark: 5
 
-present_sequential: False
+present_sequential: True
 elem_x_pos: [-2.5, 0, 2.5, 5]
 
 # only element time is used if presentation is not sequential
@@ -19,7 +19,7 @@ times:
    before_relation: 0.25
    relation: 0.75
    after_relation: 0.25
-   after_pair: 0.2
+   after_pair: [0.6, 1.2]
    after_last_pair: [4.5, 5.5]
    after_last_question: [1.5, 2.5]
    fix_highlights: [0.5, 1.]

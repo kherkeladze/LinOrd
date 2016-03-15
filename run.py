@@ -29,6 +29,8 @@ window = visual.Window(monitor=monitor, units="deg", fullscr=True)
 waitText = visual.TextStim(window, text=u'Proszę czekać...', height=2)
 exp.set_window(window)
 waitText.draw(); window.flip()
+# hide mouse
+window.setMouseVisible(False)
 
 # instructions
 instr_dir = os.path.join(os.getcwd(), 'instr')

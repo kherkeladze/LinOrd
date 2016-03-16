@@ -15,7 +15,6 @@ from psychopy import visual, event, core, gui
 # - [ ] resolve pre-relation time and pre-question time?
 # - [ ] configurable feedback time
 # - [ ] test markers
-# - [ ] add save/nosave option
 
 
 class LinOrdExperiment(object):
@@ -146,10 +145,17 @@ class LinOrdExperiment(object):
 		for q_num, q in enumerate(questions):
 			time_and_resp = self.ask_question(q)
 			if feedback:
+				# calculate dataframe row
 				row = (trial - 1) * 3 + q_num
-				resp = self.df.loc[row, 'iftrue'] == self.resp_mapping[\
-					time_and_resp[1][0]]
-				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
+				# get and check response
+				response = time_and_resp[1][0]
+				if response is not None:
+					response = self.df.loc[row, 'iftrue'] == self.\
+						resp_mapping[response]
+				else:
+					response = False
+				# choose relevant circle and show
+				circ = 'feedback_' + ['in',''][int(response)] + 'correct'
 				self.show_element(circ, 25)	
 				core.wait(0.25)
 				self.window.flip()

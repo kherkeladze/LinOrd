@@ -88,18 +88,6 @@ class LinOrdExperiment(object):
 		for s in self.stim.values():
 			s.win = window
 
-	def show_all_trials(self):
-		trials_without_break = 0
-		self.show_keymap()
-		for t in range(1, self.num_trials+1):
-			self.show_trial(t)
-			self.save_data()
-			trials_without_break += 1
-			if trials_without_break >= self.settings['przerwa_co_ile_modeli']:
-				trials_without_break = 0
-				self.present_break()
-				self.show_keymap()
-
 	def get_time(self, stim):
 		time = self.times[stim]
 		if isinstance(time, list):
@@ -119,6 +107,143 @@ class LinOrdExperiment(object):
 				key, _ = key
 			if self.quitopt['button'] in key:
 				core.quit()
+
+	# DISPLAY
+	# -------
+	def show_all_trials(self):
+		trials_without_break = 0
+		self.show_keymap()
+		for t in range(1, self.num_trials+1):
+			self.show_trial(t)
+			self.save_data()
+			trials_without_break += 1
+			if trials_without_break >= self.settings['przerwa_co_ile_modeli']:
+				trials_without_break = 0
+				self.present_break()
+				self.show_keymap()
+
+	def show_trial(self, trial, feedback=False):
+		# get model and relation
+		model, sequence, relation = self.get_model(trial)
+
+		# get questions
+		questions = self.get_questions(model, relation, trial)
+		self.filldf(trial, model, sequence, relation, questions)
+
+		# show premises
+		if self.send_triggers:
+			for el in ['letter', 'relation']:
+				self.triggers[el] = self.settings['triggers'][el]
+		premise_times = self.show_premises(model, sequence, relation)
+
+		# change triggers for questions
+		if self.send_triggers:
+			add = self.settings['triggers']['question_add']
+			for el in ['letter', 'relation']:
+				self.triggers[el] = self.settings['triggers'][el] + add
+
+		# show questions
+		for q_num, q in enumerate(questions):
+			time_and_resp = self.ask_question(q)
+			if feedback:
+				row = (trial - 1) * 3 + q_num
+				resp = self.df.loc[row, 'iftrue'] == self.resp_mapping[\
+					time_and_resp[1][0]]
+				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
+				self.show_element(circ, 25)	
+				core.wait(0.25)
+				self.window.flip()
+			self.save_responses(trial, q_num, time_and_resp)
+		finish_time = self.get_time('after_last_question')
+		self.show_element('btw_pairs', finish_time)
+
+	def show_premises(self, model, sequence, relation, with_wait=True):
+		all_times = list()
+		if isinstance(model, str):
+			model = list(model)
+		model = np.asarray(model)
+		sequence = np.asarray(sequence)
+		for i in [[0,1], [2,3], [4,5]]:
+			pair = model[sequence[i]]
+			pair = ' '.join([pair[0], relation, pair[1]])
+
+			# pre-stim time
+			time1 = self.get_time('pre_pair')
+			self.show_element('btw_pairs', time1)
+
+			# show pair
+			times = self.show_pair(pair)
+			times = [time1] + times
+			if i[0] is not 4:
+				next_time1 = self.get_time('after_pair')
+				next_time2 = 0
+				self.show_element('btw_pairs', next_time1)
+			elif with_wait:
+				next_time1 = self.get_time('after_last_pair')
+				next_time2 = self.get_time('fix_highlights')
+				next_time1 -= next_time2
+				self.show_element('dur_wait', next_time1)
+				self.show_element('dur_wait_change', next_time2)
+				self.check_quit()
+			else:
+				next_time1, next_time2 = 0, 0
+			# add to times and append to all_times
+			times += [next_time1, next_time2]
+		all_times.append(times)
+		return np.array(all_times)
+
+	def ask_question(self, question):
+		# show relation
+		if not self.sequential:
+			question += ' ?'
+
+		# pre-stim time
+		time1 = self.get_time('pre_pair')
+		self.show_element('btw_pairs', time1)
+
+		# show pair
+		times = self.show_pair(question)
+		self.clock.reset()
+		times = [time1] + times
+		if self.sequential:
+			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
+			[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
+
+		resp = event.waitKeys(maxWait=self.times['response'],
+							  keyList=self.resp_keys,
+					  		  timeStamped=self.clock)
+		# return response
+		self.check_quit(key=resp)
+		if isinstance(resp, list):
+			resp = resp[0]
+		return (times, resp)
+
+	def show_pair(self, pair):
+		if self.sequential:
+			events = ['element', 'before_relation', 'relation',
+				'after_relation', 'element']
+			times = map(self.get_time, events)
+		else:
+			times = [self.get_time('element')]
+		self._show_pair(pair, times)
+		return times
+
+	def _show_pair(self, pair, times):
+		# show_pair can return randomized times
+		# elems = pair.split('')
+		elems = list(pair)
+		if self.sequential:
+			elems = [x.lower() for x in elems]
+			assert len(elems) == len(times)
+			[self.show_element(el, tm) for el, tm in zip(elems, times)]
+		else:
+			# set position of left and right letter
+			elems = [x.lower() for x in elems if x != ' ']
+			itr = [0,2,3] if len(elems)==4 else [0, 2]
+			for i in itr:
+				self.stim[elems[i]].pos = [self.settings['elem_x_pos'][i], 0.]
+			self.show_element(elems, times[0])
+		self.check_quit()
 
 	def present_break(self):
 		text = self.settings['tekst_przerwy']
@@ -143,6 +268,26 @@ class LinOrdExperiment(object):
 		k = event.waitKeys()
 		self.check_quit(key=k)
 
+	def show_element(self, elem, time):
+		elem_show = True
+		is_list = isinstance(elem, list)
+		if not is_list and elem not in self.stim:
+			elem_show = False
+		# draw element
+		if elem_show:
+			if not is_list:
+				elem = [elem]
+			self.set_trigger(elem[0])
+		for f in range(time):
+			if elem_show:
+				if f == 2:
+					self.set_trigger(0)
+				for el in elem:
+					self.stim[el].draw()
+			self.window.flip()
+
+	# other
+	# -----
 	def create_stimuli(self):
 		args = {'units': 'deg', 'height': self.settings['sizes']['letter']}
 		self.stim = {l: visual.TextStim(self.window, text=l.upper(), **args)
@@ -181,167 +326,23 @@ class LinOrdExperiment(object):
 		self.stim['feedback_incorrect'] = fix(self.window, height=self.\
 			settings['feedback_circle_radius'], color=feedback_colors[1,:])
 
-	def _show_pair(self, pair, times):
-		# show_pair can return randomized times
-		# elems = pair.split('')
-		elems = list(pair)
-		if self.sequential:
-			elems = [x.lower() for x in elems]
-			assert len(elems) == len(times)
-			[self.show_element(el, tm) for el, tm in zip(elems, times)]
-		else:
-			# set position of left and right letter
-			elems = [x.lower() for x in elems if x != ' ']
-			itr = [0,2,3] if len(elems)==4 else [0, 2]
-			for i in itr:
-				self.stim[elems[i]].pos = [self.settings['elem_x_pos'][i], 0.]
-			self.show_element(elems, times[0])
-		self.check_quit()
-
-	def show_element(self, elem, time):
-		elem_show = True
-		is_list = isinstance(elem, list)
-		if not is_list and elem not in self.stim:
-			elem_show = False
-		# draw element
-		if elem_show:
-			if not is_list:
-				elem = [elem]
-			self.set_trigger(elem[0])
-		for f in range(time):
-			if elem_show:
-				if f == 2:
-					self.set_trigger(0)
-				for el in elem:
-					self.stim[el].draw()
-			self.window.flip()
-
-	def show_pair(self, pair):
-		if self.sequential:
-			events = ['element', 'before_relation', 'relation',
-				'after_relation', 'element']
-			times = map(self.get_time, events)
-		else:
-			times = [self.get_time('element')]
-		self._show_pair(pair, times)
-		return times
-
-	def ask_question(self, question):
-		# show relation
-		if not self.sequential:
-			question += ' ?'
-
-		# pre-stim time
-		time1 = self.get_time('pre_pair')
-		self.show_element('btw_pairs', time1)
-
-		# show pair
-		times = self.show_pair(question)
-		self.clock.reset()
-		times = [time1] + times
-		if self.sequential:
-			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
-			[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
-
-		resp = event.waitKeys(maxWait=self.times['response'],
-							  keyList=self.resp_keys,
-					  		  timeStamped=self.clock)
-		# return response
-		self.check_quit(key=resp)
-		if isinstance(resp, list):
-			resp = resp[0]
-		return (times, resp)
-
-	def show_premises(self, model, sequence, relation, with_wait=True):
-		all_times = list()
-		if isinstance(model, str):
-			model = list(model)
-		model = np.asarray(model)
-		sequence = np.asarray(sequence)
-		for i in [[0,1], [2,3], [4,5]]:
-			pair = model[sequence[i]]
-			pair = ' '.join([pair[0], relation, pair[1]])
-
-			# pre-stim time
-			time1 = self.get_time('pre_pair')
-			self.show_element('btw_pairs', time1)
-
-			# show pair
-			times = self.show_pair(pair)
-			times = [time1] + times
-			if i[0] is not 4:
-				next_time1 = self.get_time('after_pair')
-				next_time2 = 0
-				self.show_element('btw_pairs', next_time1)
-			elif with_wait:
-				next_time1 = self.get_time('after_last_pair')
-				next_time2 = self.get_time('fix_highlights')
-				next_time1 -= next_time2
-				self.show_element('dur_wait', next_time1)
-				self.show_element('dur_wait_change', next_time2)
-				self.check_quit()
-			else:
-				next_time1, next_time2 = 0, 0
-			# add to times and append to all_times
-			times += [next_time1, next_time2]
-		all_times.append(times)
-		return np.array(all_times)
-
-	def show_trial(self, trial, feedback=False):
-		# get model and relation
-		model, sequence, relation = self.get_model(trial)
-
-		# get questions
-		questions = self.get_questions(model, relation, trial)
-		self.filldf(trial, model, sequence, relation, questions)
-
-		# show premises
-		if self.send_triggers:
-			for el in ['letter', 'relation']:
-				self.triggers[el] = self.settings['triggers'][el]
-		premise_times = self.show_premises(model, sequence, relation)
-
-		# change triggers for questions
-		if self.send_triggers:
-			add = self.settings['triggers']['question_add']
-			for el in ['letter', 'relation']:
-				self.triggers[el] = self.settings['triggers'][el] + add
-
-		# show questions
-		for q_num, q in enumerate(questions):
-			time_and_resp = self.ask_question(q)
-			if feedback:
-				resp = self.df.loc[trial, 'ifcorrect']
-				if np.isnan(resp):
-					resp = 0
-				circ = 'feedback_' + ['in',''][int(resp)] + 'correct'
-				self.show_element(circ, 25)	
-				core.wait(0.25)
-				self.window.flip()
-			self.save_responses(trial, q_num, time_and_resp)
-
 	def reverse_relation(self, relation):
 		if relation == '>':
 			return '<'
 		else:
 			return '>'
 
-	def _create_question(self, model, relation, distance, reverse, ifpos):
-		if isinstance(model, str):
-			model = list(model)
-		model = np.asarray(model)
+	# create trials, save responses
+	# -----------------------------
+	def get_model(self, trial):
+		chose_ind = self.trials['model'] == trial
+		trial_df = self.trials.loc[chose_ind, :]
 
-		q_pair = random.sample(self.all_questions[distance], 1)[0]
-		# sort pair to be in model order:
-		# q_pair.sort()
-
-		if reverse:
-			relation = self.reverse_relation(relation)
-			q_pair.reverse()
-		if not ifpos:
-			q_pair.reverse()
-
-		return ' '.join([model[q_pair[0]], relation, model[q_pair[1]]])
+		model = random.sample(self.letters, 4)
+		relation = random.sample(self.relations, 1)[0]
+		ii, jj = trial_df.iloc[0, [1,2]]
+		sequence = self.conditions[ii, jj, :]
+		return model, sequence, relation
 
 	def get_questions(self, model, relation, trial):
 		chose_ind = self.trials['model'] == trial
@@ -352,15 +353,55 @@ class LinOrdExperiment(object):
 			trial_df.loc[i, 'yesanswer']) for i in trial_df.index]
 		return questions
 
-	def get_model(self, trial):
-		chose_ind = self.trials['model'] == trial
-		trial_df = self.trials.loc[chose_ind, :]
+	def _create_question(self, model, relation, distance, reverse, ifpos):
+		if isinstance(model, str):
+			model = list(model)
+		model = np.asarray(model)
 
-		model = random.sample(self.letters, 4)
-		relation = random.sample(self.relations, 1)[0]
-		ii, jj = trial_df.iloc[0, [1,2]]
-		sequence = self.conditions[ii, jj, :]
-		return model, sequence, relation
+		q_pair = list(random.sample(self.all_questions[distance], 1)[0])
+
+		if reverse:
+			relation = self.reverse_relation(relation)
+			q_pair.reverse()
+		if not ifpos:
+			q_pair.reverse()
+
+		question = ' '.join([model[q_pair[0]], relation, model[q_pair[1]]])
+		return question
+
+	def create_trials(self, repetitions=1):
+		mat = self._create_combinations_matrix(repetitions=repetitions)
+		nrow = mat.shape[0]
+		df = pd.DataFrame(columns=['model', 'model_row', 'model_col',
+			'question_distance', 'inverted_relation', 'yesanswer'],
+			index=range(0, nrow))
+		df = df.fillna(0)
+		df_row = 0
+		modelnum = 0
+		while nrow > 0:
+			modelnum += 1
+			choose_model = random.randint(0, nrow-1)
+			model = mat[choose_model, 0:2]
+			same_model = np.where(np.all(mat[:, 0:2] == model, axis=1))[0]
+			questions = mat[same_model, 2:]
+			rm_row = list()
+			question_order = random.sample(range(3), 3)
+			for q in question_order:
+				this_question = np.where(questions[:,0] == q)[0]
+				pick_question = random.sample(list(this_question), 1)[0]
+				df.iloc[df_row,:] = np.hstack([modelnum, model, questions[pick_question, :]])
+				rm_row.append(same_model[pick_question])
+				df_row += 1
+			mat = np.delete(mat, rm_row, axis=0)
+			nrow = mat.shape[0]
+		return df
+
+	def _create_combinations_matrix(self, repetitions=1):
+		cnd_shp = self.conditions.shape
+		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
+			for mcol in range(cnd_shp[1]) for qtp in range(3)
+			for inv in range(2) for yes in range(2)] * repetitions
+		return np.array(mat)
 
 	def filldf(self, trial, model, sequence, relation, questions):
 		inds = np.where(self.trials['model'] == trial)[0]
@@ -453,6 +494,8 @@ class LinOrdExperiment(object):
 		else:
 			core.quit()
 
+	# triggers
+	# --------
 	def set_up_ports(self):
 		if self.send_triggers:
 			try:

@@ -9,15 +9,9 @@ exp = LinOrdExperiment(win, 'settings.yaml')
 df = exp.create_trials()
 print(df.head(10))
 
-qst = exp.get_questions('ABCD', '<', 2)
-for q in qst:
-	print(q)
-exp.filldf(2, 'ABCD', [[0,1],[1,2],[2,3]], '<', qst)
-print(exp.df.head(10))
-
-qst = exp.get_questions('ABCD', '<', 2)
-for q in qst:
-	print(q)
-exp.filldf(1, 'ABCD', [[0,1],[1,2],[2,3]], '<', qst)
-print(exp.df.head(10))
-print(exp.trials.head(20))
+for i in range(3):
+	qst = exp.get_questions('ABCD', '<', i)
+	for q in qst:
+		print(q)
+	exp.df.head(10)
+	exp.trials.head(10)

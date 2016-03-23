@@ -30,6 +30,7 @@ class LinOrdExperiment(object):
 			settings = yaml.load(f)
 
 		self.sequential = settings['present_sequential']
+		self.rev_q_rel = settings['reverse_question_relation']
 
 		self.times = s2frames(settings['times'], self.frame_time)
 		self.times['response'] = settings['times']['response']
@@ -408,9 +409,10 @@ class LinOrdExperiment(object):
 
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
+		inv_rng = 2 if self.rev_q_rel else 1
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
 			for mcol in range(cnd_shp[1]) for qtp in range(3)
-			for inv in range(2) for yes in range(2)] * repetitions
+			for inv in range(inv_rng) for yes in range(2)] * repetitions
 		return np.array(mat)
 
 	def filldf(self, trial, model, sequence, relation, questions):

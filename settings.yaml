@@ -8,6 +8,7 @@ triggers:
    question_mark: 5
 
 present_sequential: True
+reverse_question_relation: False
 elem_x_pos: [-2.5, 0, 2.5, 5]
 
 # only element time is used if presentation is not sequential

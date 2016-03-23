@@ -149,7 +149,10 @@ class LinOrdExperiment(object):
 				# calculate dataframe row
 				row = (trial - 1) * 3 + q_num
 				# get and check response
-				response = time_and_resp[1][0]
+				try:
+					response = time_and_resp[1][0] # check time_and_resp[1] - sometimes None or nan
+				except:
+					response = None
 				if response is not None:
 					response = self.df.loc[row, 'iftrue'] == self.\
 						resp_mapping[response]

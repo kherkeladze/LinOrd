@@ -7,6 +7,9 @@ from psychopy import core, visual, monitors, event
 from exputils import LinOrdExperiment, Instructions
 
 participantDistance = 60
+file_path = os.path.join(*(__file__.split('\\')[:-1]))
+file_path = file_path.replace(':', ':\\')
+print file_path
 
 # check correct monitor type
 monitorList = monitors.getAllMonitors()
@@ -21,7 +24,7 @@ else:
 window = visual.Window(monitor=monitor, units="deg",
     fullscr=False, size=[1200,800])
 
-exp = LinOrdExperiment(window, 'settings.yaml')
+exp = LinOrdExperiment(window, os.path.join(file_path, 'settings.yaml'))
 exp.get_subject_id()
 
 #create fullscreen window

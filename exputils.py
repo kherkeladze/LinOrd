@@ -36,6 +36,7 @@ class LinOrdExperiment(object):
 		self.times['response'] = settings['times']['response']
 		self.settings = settings
 
+		# key mappings
 		self.resp_keys = settings['resp_keys']
 		rnd = random.sample([True, False], 1)[0]
 		self.resp_mapping = {self.resp_keys[0]: rnd}

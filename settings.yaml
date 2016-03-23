@@ -1,7 +1,7 @@
 send_triggers: False
 port_adress: x0H43
 triggers:
-   fixation: [11, 12]
+   fixation: [11, 12] # one trigger for normal, other for highlight
    letter: 1
    relation: 2
    question_add: 2
@@ -56,7 +56,7 @@ resp_keys: [f, j]
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
 repetitions: 5
 condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)
-condition_columns: [0, 1] # obie sekwencje dla każdego warunku
+condition_columns: [0] # [0, 1] - obie sekwencje dla każdego warunku
 
 przerwa_co_ile_modeli: 1
 tekst_przerwy: Czas na przerwę - jeżeli masz taką potrzebę.\nMożesz teraz mrugać i ruszać się do woli.\nAby przejść dalej naciśnij dowolny klawisz.

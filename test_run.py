@@ -34,8 +34,12 @@ waitText.draw(); window.flip()
 # hide mouse
 window.setMouseVisible(False)
 
+print(exp.resp_keys)
+print(exp.resp_mapping)
+
 # instructions
-instr_dir = os.path.join(os.getcwd(), 'instr')
+os.chdir(file_path)
+instr_dir = os.path.join(file_path, 'instr')
 instr = os.listdir(instr_dir)
 resp_slides = ['porzadki6_F-TAK.png', 'porzadki6_J-TAK.png']
 if exp.resp_mapping['f']:

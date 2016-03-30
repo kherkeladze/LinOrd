@@ -50,10 +50,6 @@ instr.present()
 orig_subj_id = exp.subject['id']
 exp.subject['id'] += '_training'
 
-mat = exp._create_combinations_matrix(repetitions=2)
-print('combinations matrix:\n', mat)
-print('data:\n', exp.trials.head(15))
-
 # training
 for i in range(1, 8):
     exp.show_trial(i, feedback=True)

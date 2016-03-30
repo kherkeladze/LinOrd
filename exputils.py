@@ -419,8 +419,6 @@ class LinOrdExperiment(object):
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
 		inv_rng = 2 if self.rev_q_rel else 1
-		print('inv_rng:', inv_rng)
-		print('range(inv_rng):', range(inv_rng))
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
 			for mcol in range(cnd_shp[1]) for qtp in range(3)
 			for inv in range(inv_rng) for yes in range(2)] * repetitions
@@ -454,13 +452,6 @@ class LinOrdExperiment(object):
 			self.df.loc[ind, 'answer'] = np.nan
 			self.df.loc[ind, 'ifcorrect'] = 0
 			self.df.loc[ind, 'RT'] = np.nan
-
-	def _create_combinations_matrix(self, repetitions=1):
-		cnd_shp = self.conditions.shape
-		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
-			for mcol in range(cnd_shp[1]) for qtp in range(3)
-			for inv in range(2) for yes in range(2)] * repetitions
-		return np.array(mat)
 
 	def create_trials(self, repetitions=1):
 		mat = self._create_combinations_matrix(repetitions=repetitions)

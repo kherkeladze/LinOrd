@@ -209,6 +209,7 @@ class LinOrdExperiment(object):
 		if not self.sequential:
 			question += ' ?'
 
+		resp = None
 		# pre-stim time
 		time1 = self.get_time('pre_pair')
 		self.show_element('btw_pairs', time1)
@@ -217,13 +218,20 @@ class LinOrdExperiment(object):
 		times = self.show_pair(question)
 		self.clock.reset()
 		times = [time1] + times
-		if self.sequential:
+		resp = event.getKeys(keyList=self.resp_keys,
+							 timeStamped=self.clock)
+		if self.sequential and resp is not None:
 			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
-			[self.show_element(el, tm) for el, tm in zip(['', '?'], q_times)]
+			for el, tm in zip(['', '?'], q_times):
+				if resp is not None:
+					self.show_element(el, tm) 
+					resp = event.getKeys(keyList=self.resp_keys,
+										 timeStamped=self.clock)
 
-		resp = event.waitKeys(maxWait=self.times['response'],
-							  keyList=self.resp_keys,
-					  		  timeStamped=self.clock)
+		if resp is not None:
+			resp = event.waitKeys(maxWait=self.times['response'],
+								  keyList=self.resp_keys,
+						  		  timeStamped=self.clock)
 		# return response
 		self.check_quit(key=resp)
 		if isinstance(resp, list):
@@ -411,6 +419,8 @@ class LinOrdExperiment(object):
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
 		inv_rng = 2 if self.rev_q_rel else 1
+		print('inv_rng:', inv_rng)
+		print('range(inv_rng):', range(inv_rng))
 		mat = [[mrow, mcol, qtp, inv, yes] for mrow in range(cnd_shp[0])
 			for mcol in range(cnd_shp[1]) for qtp in range(3)
 			for inv in range(inv_rng) for yes in range(2)] * repetitions

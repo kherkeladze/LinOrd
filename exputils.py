@@ -37,14 +37,9 @@ class LinOrdExperiment(object):
 		self.settings = settings
 
 		# key mappings
-		self.resp_keys = settings['resp_keys']
-		rnd = random.sample([True, False], 1)[0]
-		self.resp_mapping = {self.resp_keys[0]: rnd}
-		self.resp_mapping.update({self.resp_keys[1]: not rnd})
-
 		self.quitopt = settings['quit']
-		if self.quitopt['enable']:
-			self.resp_keys.append(self.quitopt['button'])
+		self.resp_keys = settings['resp_keys']
+		self.set_resp()
 
 		self.clock = core.Clock()
 		self.current_trial = 0
@@ -84,6 +79,19 @@ class LinOrdExperiment(object):
 		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
 		self.num_trials = int(np.max(self.trials['model']))
+
+	def set_resp(self, true_key=None):
+		if self.quitopt['button'] in self.resp_keys:
+			self.resp_keys.remove(self.quitopt['button'])
+		if true_key is None:
+			rnd = random.sample([True, False], 1)[0]
+			self.resp_mapping = {self.resp_keys[0]: rnd}
+			self.resp_mapping.update({self.resp_keys[1]: not rnd})
+		else:
+			true_ind = self.resp_keys.index(true_key)
+			self.resp_mapping = {k: i == true_ind for i, k in enumerate(self.resp_keys)}
+		if self.quitopt['enable']:
+			self.resp_keys.append(self.quitopt['button'])
 
 	def set_window(self, window):
 		self.window = window

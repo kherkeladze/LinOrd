@@ -228,15 +228,15 @@ class LinOrdExperiment(object):
 		times = [time1] + times
 		resp = event.getKeys(keyList=self.resp_keys,
 							 timeStamped=self.clock)
-		if self.sequential and resp is not None:
+		if self.sequential and isnull(resp):
 			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
 			for el, tm in zip(['', '?'], q_times):
-				if resp is not None:
+				if isnull(resp):
 					self.show_element(el, tm) 
 					resp = event.getKeys(keyList=self.resp_keys,
 										 timeStamped=self.clock)
 
-		if resp is not None:
+		if isnull(resp):
 			resp = event.waitKeys(maxWait=self.times['response'],
 								  keyList=self.resp_keys,
 						  		  timeStamped=self.clock)
@@ -588,6 +588,14 @@ def s2frames(time_in_seconds, frame_time):
 		else:
 			time_in_frames[k] = toframes(v)
 	return time_in_frames
+
+def isnull(x):
+	if x is None:
+		return True
+	elif isinstance(x, list):
+		return len(x) == 0
+	else:
+		return False
 
 # wypisz kolejne pary
 # relation = random.sample(['<', '>'], 1)[0]

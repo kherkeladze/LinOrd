@@ -7,9 +7,11 @@ from psychopy import core, visual, monitors, event
 from exputils import LinOrdExperiment, Instructions
 
 participantDistance = 60
+
+# set path
 file_path = os.path.join(*(__file__.split('\\')[:-1]))
 file_path = file_path.replace(':', ':\\')
-print file_path
+os.chdir(file_path)
 
 # check correct monitor type
 monitorList = monitors.getAllMonitors()
@@ -35,19 +37,12 @@ waitText.draw(); window.flip()
 # hide mouse
 window.setMouseVisible(False)
 
+# at least now:
+exp.set_resp(true_key='f')
+
 # instructions
 instr_dir = os.path.join(os.getcwd(), 'instr')
 instr = os.listdir(instr_dir)
-if exp.isolum['>'] == 135:
-    todel = [1,3,5,8]
-    todel.reverse()
-    for d in todel:
-        del instr[d]
-else:
-    todel = [0,2,4,7]
-    todel.reverse()
-    for d in todel:
-        del instr[d]
 
 if exp.resp_mapping['f']:
     del instr[2]

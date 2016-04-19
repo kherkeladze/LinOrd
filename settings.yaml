@@ -30,7 +30,7 @@ times:
 
 sizes:
    letter: 2.5
-   fix_height: 0.25
+   fix_height: 0.5
    fix_width: 0.1
    key_info: 1.5
 feedback_circle_radius: 7
@@ -40,7 +40,7 @@ fix_between_pairs: True
 fix_during_wait: True
 fix_change_color: [191, 30, 45]
 
-isoluminant_relations: True
+isoluminant_relations: False
 iso_degs: [135, 315]
 
 # keys for yes/no (mapping is randomized)
@@ -54,7 +54,7 @@ resp_keys: [f, j]
 # to mamy 4 warunki a do każdego 4 pakiety pytań (po 3)
 # w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
-repetitions: 5
+repetitions: 15
 condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)
 condition_columns: [0] # [0, 1] - obie sekwencje dla każdego warunku
 

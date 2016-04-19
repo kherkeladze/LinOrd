@@ -1,5 +1,5 @@
-send_triggers: False
-port_adress: x0H43
+send_triggers: True
+port_adress: '0xCC00'
 triggers:
    fixation: [11, 12] # one trigger for normal, other for highlight
    letter: 1

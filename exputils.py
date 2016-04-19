@@ -70,7 +70,7 @@ class LinOrdExperiment(object):
 
 		# port stuff
 		self.send_triggers = self.settings['send_triggers']
-		self.port_adress = self.settings['port_adress']
+		self.port_adress = int(self.settings['port_adress'], base=16)
 		self.triggers = self.settings['triggers']
 		self.set_up_ports()
 
@@ -531,7 +531,7 @@ class LinOrdExperiment(object):
 				self.send_triggers = False
 
 	def send_trigger(self, code):
-		self.inpout32.Out32(self.port_address, code)
+		self.inpout32.Out32(self.port_adress, code)
 
 	def set_trigger(self, event):
 		if self.send_triggers:
@@ -548,7 +548,7 @@ class LinOrdExperiment(object):
 					trig = self.triggers[event]
 					self.window.callOnFlip(self.send_trigger, trig)
 				elif event == '?':
-					trig = self.triggers[question_mark]
+					trig = self.triggers['question_mark']
 					self.window.callOnFlip(self.send_trigger, trig)
 
 

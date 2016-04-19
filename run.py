@@ -50,33 +50,13 @@ else:
         del instr[d]
 
 if exp.resp_mapping['f']:
-    del instr[6]
+    del instr[2]
 else:
-    del instr[5]
-instr = [os.path.join('instr', i) for i in instr]
+    del instr[1]
+instr = [os.path.join(instr_dir, f) for f in instr]
 
-# add examples to instructions
-def example1():
-    exp.show_pair('D > B')
-    core.wait(0.35)
-
-def example2():
-    exp.show_premises('BGPZ', [0,1,1,2,2,3],
-        '>', with_wait=False)
-    core.wait(0.35)
-    waitText.setText('poprawny model to:\nB > G > P > Z')
-    waitText.draw()
-    window.flip()
-    event.waitKeys()
-
-def example3():
-    exp.show_trial(random.randint(4, exp.df.shape[0]/3-1))
-
-instr.insert(1, example1)
-instr.insert(4, example2)
-instr.insert(8, example3)
 instr = Instructions(window, instr)
-instr.present(stop=10)
+instr.present(stop=4)
 
 orig_subj_id = exp.subject['id']
 exp.subject['id'] += '_training'
@@ -90,7 +70,7 @@ for i in range(1, 8):
 exp.subject['id'] = orig_subj_id
 exp.create_trials(repetitions=exp.settings['repetitions'])
 
-instr.present(stop=11)
+instr.present(stop=5)
 
 exp.show_all_trials()
 instr.present()

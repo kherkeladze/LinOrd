@@ -15,18 +15,20 @@ elem_x_pos: [-2.5, 0, 2.5, 5]
 # before_relation, relation and after_relation are not used
 # then
 times:
-   pre_pair: [0.6, 1.2]
+   pre_pair: [0.8, 1.2]
    element: 0.75
    before_relation: 0.25
    relation: 0.75
    after_relation: 0.25
-   after_pair: [0.6, 1.2]
-   after_last_pair: [4.5, 5.5]
-   after_last_question: [1.5, 2.5]
-   fix_highlights: [0.5, 1.]
+   after_pair: [0.6, 1.2]          # after_pair vs pre_pair
+   after_last_pair: [4.5, 5.5]     # maintenance
+   fix_highlights: [0.5, 1.]       # should be shorter (maybe)
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
+   after_last_question: [1.5, 2.5] # post-trial? to do usunięcia chyba...
+   pre_trial: [1, 2]
+   post_trial: [0.5, 0.75]         # aby info o przerwie nie pojawiało się od razu
 
 sizes:
    letter: 5
@@ -49,11 +51,15 @@ resp_keys: [f, j]
 # wybór triali
 # ------------
 training_trials: 2
-# repetitions mówi o tym ile razy bierzemy podstawowe kombinacje
+
+# repetitions mówi o tym ile razy bierzemy podstawowe kombinacje triali
+# przykład:
 # jeżeli używamy 2 trudności * 2 kolejności modeli
-# a do każdego mamy 3 odległości pytań * 2 czyodwrócona relacja * 2 czyodpowiedź tak
-# to mamy 4 warunki a do każdego 4 pakiety pytań (po 3)
-# w związku z tym mamy 4 * 4 = 16 kombinacji warunek - pytania
+# a do każdego mamy 3 odległości pytań * czyodwrócona relacja (2 opcje - tak/nie)
+# * czyodpowiedź tak (tak samo - 2 opcje) to mamy:
+# 4 warunki (trudność * kolejność) a do każdego 
+# 4 pakiety pytań (12 pytań w sumie (3*2*2), ale po 3 do każdego triala/modelu)
+# w związku z tym mamy 4 * 4 = 16 kombinacji triali (model + pytania)
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali
 repetitions: 15
 condition_rows: [0, 2] # tzn pierwszy i trzeci rząd (czyli bez środkowych)

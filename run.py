@@ -47,8 +47,7 @@ def run(window=None, subject_id=None, true_key=None,
     waitText.draw(); window.flip()
 
     # hide mouse
-    window.setMouseVisible(False)
-
+    window.mouseVisible = False
 
     # instructions
     instr_dir = os.path.join(os.getcwd(), 'instr')

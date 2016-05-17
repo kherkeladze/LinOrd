@@ -171,7 +171,7 @@ class LinOrdExperiment(object):
 					response = False
 				# choose relevant circle and show
 				circ = 'feedback_' + ['in',''][int(response)] + 'correct'
-				self.show_element(circ, 25)	
+				self.show_element(circ, 25)
 				core.wait(0.25)
 				self.window.flip()
 			self.save_responses(trial, q_num, time_and_resp)
@@ -233,7 +233,7 @@ class LinOrdExperiment(object):
 			q_times = map(self.get_time, ['pre_question_mark', 'question_mark'])
 			for el, tm in zip(['', '?'], q_times):
 				if isnull(resp):
-					self.show_element(el, tm) 
+					self.show_element(el, tm)
 					resp = event.getKeys(keyList=self.resp_keys,
 										 timeStamped=self.clock)
 

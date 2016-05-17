@@ -109,7 +109,7 @@ class LinOrdExperiment(object):
 	def check_quit(self, key=None):
 		if self.quitopt['enable']:
 			if key == None:
-				key = event.getKeys()
+				key = event.getKeys(keyList=[self.quitopt['button']])
 			if key == None or len(key) == 0:
 				return
 			if isinstance(key[0], tuple):

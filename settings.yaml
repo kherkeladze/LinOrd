@@ -29,7 +29,7 @@ times:
    response: 5
 
 sizes:
-   letter: 2.5
+   letter: 5
    fix_height: 0.5
    fix_width: 0.1
    key_info: 1.5
@@ -48,6 +48,7 @@ resp_keys: [f, j]
 
 # wybór triali
 # ------------
+training_trials: 2
 # repetitions mówi o tym ile razy bierzemy podstawowe kombinacje
 # jeżeli używamy 2 trudności * 2 kolejności modeli
 # a do każdego mamy 3 odległości pytań * 2 czyodwrócona relacja * 2 czyodpowiedź tak

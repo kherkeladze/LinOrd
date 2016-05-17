@@ -30,20 +30,17 @@ def run(window=None, subject_id=None, true_key=None,
     file_path = file_path.replace(':', ':\\')
     os.chdir(file_path)
 
-    # create temporary window
-    monitor = get_screen(scr_dist=scr_dist)
-    temp_window = visual.Window(monitor=monitor, units="deg",
-        fullscr=False, size=[1200,800])
+    # create window
+    if window is None:
+        monitor = get_screen(scr_dist=scr_dist)
+        window = visual.Window(monitor=monitor, units="deg", fullscr=True)
 
-    exp = LinOrdExperiment(temp_window, os.path.join(file_path, 'settings.yaml'))
+    exp = LinOrdExperiment(window, os.path.join(file_path, 'settings.yaml'))
     exp.set_subject_id(subject_id)
     exp.set_resp(true_key=true_key)
 
-    #create fullscreen window
-    if window is None:
-        window = visual.Window(monitor=monitor, units="deg", fullscr=True)
     waitText = visual.TextStim(window, text=u'Proszę czekać...', height=2)
-    exp.set_window(window)
+    # exp.set_window(window)
     waitText.draw(); window.flip()
 
     # hide mouse
@@ -65,7 +62,7 @@ def run(window=None, subject_id=None, true_key=None,
     orig_subj_id = exp.subject['id']
     exp.subject['id'] += '_training'
     # training
-    for i in range(1, 8):
+    for i in range(1, exp.settings['training_trials'] + 1):
         exp.show_trial(i, feedback=True)
         exp.save_data()
         if i > 1 and exp.df.loc[i, 'ifcorrect'] == 0:

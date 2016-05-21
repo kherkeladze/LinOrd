@@ -58,13 +58,13 @@ def run(window=None, subject_id=None, true_key=None,
     instr = os.listdir(instr_dir)
 
     if exp.resp_mapping['f']:
-        del instr[2]
+        del instr[5]
     else:
-        del instr[1]
+        del instr[4]
     instr = [os.path.join(instr_dir, f) for f in instr]
 
     instr = Instructions(window, instr)
-    instr.present(stop=4)
+    instr.present(stop=6)
 
     orig_subj_id = exp.subject['id']
     exp.subject['id'] += '_training'
@@ -84,7 +84,7 @@ def run(window=None, subject_id=None, true_key=None,
     exp.subject['id'] = orig_subj_id
     exp.create_trials(repetitions=exp.settings['repetitions'])
 
-    instr.present(stop=5)
+    instr.present(stop=7)
 
     exp.show_all_trials()
     return exp

@@ -68,6 +68,12 @@ def run(window=None, subject_id=None, true_key=None,
 
     orig_subj_id = exp.subject['id']
     exp.subject['id'] += '_training'
+    exp.trials = exp.trials.query('model_row == 0').reset_index(drop=True)
+    # reset model id
+    nrows = exp.trials.shape[0]
+    exp.trials.loc[:, 'model'] = np.tile(np.arange(1, nrows/3 + 1, dtype='int'),
+                                [3, 1]).T.ravel()
+
     # training
     for i in range(1, exp.settings['training_trials'] + 1):
         exp.show_trial(i, feedback=True)

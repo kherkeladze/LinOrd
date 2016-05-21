@@ -3,6 +3,8 @@
 from __future__ import division
 import os
 import random
+
+import numpy as np
 from psychopy import core, visual, monitors, event
 from exputils import LinOrdExperiment, Instructions
 
@@ -26,13 +28,14 @@ def go_to_file_dir(pth):
     file_path = os.path.join(*(pth.split('\\')[:-1]))
     file_path = file_path.replace(':', ':\\')
     os.chdir(file_path)
+    return file_path
 
 
 def run(window=None, subject_id=None, true_key=None,
         scr_dist=scr_dist):
 
     # set path to current file location
-    go_to_file_dir(__file__)
+    file_path = go_to_file_dir(__file__)
 
     # create window
     if window is None:

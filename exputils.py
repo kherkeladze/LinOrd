@@ -77,7 +77,7 @@ class LinOrdExperiment(object):
 
 		self.isolum = dict()
 		self.create_stimuli()
-		self.trials = self.create_trials(repetitions=self.settings['repetitions'])
+		self.create_trials(repetitions=self.settings['repetitions'])
 		self.create_df()
 		self.num_trials = int(np.max(self.trials['model']))
 
@@ -427,7 +427,7 @@ class LinOrdExperiment(object):
 				df_row += 1
 			mat = np.delete(mat, rm_row, axis=0)
 			nrow = mat.shape[0]
-		return df
+		self.trials = df	
 
 	def _create_combinations_matrix(self, repetitions=1):
 		cnd_shp = self.conditions.shape
@@ -465,34 +465,6 @@ class LinOrdExperiment(object):
 			self.df.loc[ind, 'answer'] = np.nan
 			self.df.loc[ind, 'ifcorrect'] = 0
 			self.df.loc[ind, 'RT'] = np.nan
-
-	def create_trials(self, repetitions=1):
-		mat = self._create_combinations_matrix(repetitions=repetitions)
-		np.random.shuffle(mat)
-		nrow = mat.shape[0]
-		df = pd.DataFrame(columns=['model', 'model_row', 'model_col',
-			'question_distance', 'inverted_relation', 'yesanswer'],
-			index=range(0, nrow))
-		df = df.fillna(0)
-		df_row = 0
-		modelnum = 0
-		while nrow > 0:
-			modelnum += 1
-			choose_model = random.randint(0, nrow-1)
-			model = mat[choose_model, 0:2]
-			same_model = np.where(np.all(mat[:, 0:2] == model, axis=1))[0]
-			questions = mat[same_model, 2:]
-			rm_row = list()
-			question_order = random.sample(range(3), 3)
-			for q in question_order:
-				this_question = np.where(questions[:,0] == q)[0]
-				pick_question = random.sample(list(this_question), 1)[0]
-				df.iloc[df_row,:] = np.hstack([modelnum, model, questions[pick_question, :]])
-				rm_row.append(same_model[pick_question])
-				df_row += 1
-			mat = np.delete(mat, rm_row, axis=0)
-			nrow = mat.shape[0]
-		return df
 
 	def create_df(self):
 		self.df = pd.DataFrame(columns=['trial', 'model',

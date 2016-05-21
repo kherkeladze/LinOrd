@@ -56,7 +56,7 @@ training_trials: 2
 # jeżeli używamy 2 trudności * 2 kolejności modeli
 # a do każdego mamy 3 odległości pytań * czyodwrócona relacja (2 opcje - tak/nie)
 # * czyodpowiedź tak (tak samo - 2 opcje) to mamy:
-# 4 warunki (trudność * kolejność) a do każdego 
+# 4 warunki (trudność * kolejność) a do każdego
 # 4 pakiety pytań (12 pytań w sumie (3*2*2), ale po 3 do każdego triala/modelu)
 # w związku z tym mamy 4 * 4 = 16 kombinacji triali (model + pytania)
 # te wartość mnożymy przez repetitions i mamy docelową liczbę triali

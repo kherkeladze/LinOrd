@@ -87,7 +87,6 @@ def run(window=None, subject_id=None, true_key=None,
     instr.present(stop=5)
 
     exp.show_all_trials()
-    instr.present()
     return exp
 
 

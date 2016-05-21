@@ -141,6 +141,10 @@ class LinOrdExperiment(object):
 		questions = self.get_questions(model, relation, trial)
 		self.filldf(trial, model, sequence, relation, questions)
 
+		# pre-trial fixation
+		pre_trial_time = self.get_time('pre_trial')
+		self.show_element('fix', pre_trial_time)
+
 		# show premises
 		if self.send_triggers:
 			for el in ['letter', 'relation']:
@@ -175,7 +179,7 @@ class LinOrdExperiment(object):
 				core.wait(0.25)
 				self.window.flip()
 			self.save_responses(trial, q_num, time_and_resp)
-		finish_time = self.get_time('after_last_question')
+		finish_time = self.get_time('after_trial')
 		self.show_element('btw_pairs', finish_time)
 
 	def show_premises(self, model, sequence, relation, with_wait=True):
@@ -196,9 +200,8 @@ class LinOrdExperiment(object):
 			times = self.show_pair(pair)
 			times = [time1] + times
 			if i[0] is not 4:
-				next_time1 = self.get_time('after_pair')
+				next_time1 = 0
 				next_time2 = 0
-				self.show_element('btw_pairs', next_time1)
 			elif with_wait:
 				next_time1 = self.get_time('after_last_pair')
 				next_time2 = self.get_time('fix_highlights')

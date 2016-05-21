@@ -15,20 +15,19 @@ elem_x_pos: [-2.5, 0, 2.5, 5]
 # before_relation, relation and after_relation are not used
 # then
 times:
-   pre_pair: [0.8, 1.2]
+   pre_pair: [1.2, 2.0]
    element: 0.75
    before_relation: 0.25
    relation: 0.75
    after_relation: 0.25
-   after_pair: [0.6, 1.2]          # after_pair vs pre_pair
-   after_last_pair: [4.5, 5.5]     # maintenance
-   fix_highlights: [0.5, 1.]       # should be shorter (maybe)
+   after_last_pair: [4.5, 5.5] # maintenance
+   fix_highlights: [0.3, 0.6]
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
-   after_last_question: [1.5, 2.5] # post-trial? to do usunięcia chyba...
+   after_response: [0.5, 0.8]
    pre_trial: [1, 2]
-   post_trial: [0.5, 0.75]         # aby info o przerwie nie pojawiało się od razu
+   post_trial: [0.5, 0.75]     # aby info o przerwie nie pojawiało się od razu
 
 sizes:
    letter: 5

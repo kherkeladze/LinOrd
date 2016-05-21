@@ -159,6 +159,8 @@ class LinOrdExperiment(object):
 
 		# show questions
 		for q_num, q in enumerate(questions):
+			# clear keyboard buffer
+			event.getKeys()
 			time_and_resp = self.ask_question(q)
 			if feedback:
 				# calculate dataframe row
@@ -246,6 +248,10 @@ class LinOrdExperiment(object):
 						  		  timeStamped=self.clock)
 		# return response
 		self.check_quit(key=resp)
+		# wait after response
+		if not isnull(resp):
+			time_aft_resp = self.get_time('after_response')
+			self.show_element('', time_aft_resp)
 		if isinstance(resp, list):
 			resp = resp[0]
 		return (times, resp)

@@ -25,9 +25,9 @@ times:
    pre_question_mark: 0.1
    question_mark: 0.2
    response: 5
-   after_response: [0.5, 0.8]
+   after_response: [0.5, 0.8]  # wait after each response
    pre_trial: [1, 2]
-   post_trial: [0.5, 0.75]     # aby info o przerwie nie pojawiało się od razu
+   after_trial: [0.5, 0.75]     # aby info o przerwie nie pojawiało się od razu
 
 sizes:
    letter: 5

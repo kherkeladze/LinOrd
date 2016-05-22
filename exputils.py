@@ -227,6 +227,9 @@ class LinOrdExperiment(object):
 		# pre-stim time
 		time1 = self.get_time('pre_pair')
 		self.show_element('btw_pairs', time1)
+		
+		# clear keyboard buffer
+		event.getKeys()
 
 		# show pair
 		times = self.show_pair(question)

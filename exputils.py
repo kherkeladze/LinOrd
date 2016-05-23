@@ -72,7 +72,7 @@ class LinOrdExperiment(object):
 		# port stuff
 		self.send_triggers = self.settings['send_triggers']
 		self.port_adress = int(self.settings['port_adress'], base=16)
-		self.triggers = self.settings['triggers']
+		self.triggers = self.settings['triggers'].copy()
 		self.set_up_ports()
 
 		self.isolum = dict()

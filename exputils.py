@@ -290,11 +290,9 @@ class LinOrdExperiment(object):
 		text = self.settings['tekst_przerwy']
 		text = text.replace('\\n', '\n')
 		text = visual.TextStim(self.window, text=text)
-		k = False
-		while not k:
-			text.draw()
-			self.window.flip()
-			k = event.getKeys()
+		text.wrapWidth = 20
+		text.draw(); self.window.flip()
+		k = event.waitKeys()
 		self.check_quit(key=k)
 
 	def show_keymap(self):
@@ -304,7 +302,8 @@ class LinOrdExperiment(object):
 		text = u'Odpowiadasz klawiszami:\nf: {}\nj: {}'.format(
 			show_map['f'], show_map['j'])
 		text += u'\nAby przejść dalej naciśnij dowolny klawisz.'
-		stim = visual.TextStim(self.window, text=text, **args)
+		text = visual.TextStim(self.window, text=text, **args)
+		text.wrapWidth = 20
 		stim.draw()
 		self.window.flip()
 		k = event.waitKeys()

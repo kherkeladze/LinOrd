@@ -304,7 +304,7 @@ class LinOrdExperiment(object):
 		text += u'\nAby przejść dalej naciśnij dowolny klawisz.'
 		text = visual.TextStim(self.window, text=text, **args)
 		text.wrapWidth = 20
-		stim.draw()
+		text.draw()
 		self.window.flip()
 		k = event.waitKeys()
 		self.check_quit(key=k)

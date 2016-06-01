@@ -75,9 +75,18 @@ def run(window=None, subject_id=None, true_key=None,
 
     exp.subject['id'] = orig_subj_id
     exp.create_trials(repetitions=exp.settings['repetitions'])
+    
+    # ask if everything is clear
+    args = {'units': 'deg', 'height': exp.settings['sizes']['key_info']}
+	text = u'Jeżeli masz jakieś pytania/wątpliwości dotyczące zadania, ' +
+	    u'możesz zapytać się eksperymentatora.\nJeżeli nie masz żadnych' +
+	    u'pytań, możesz przejść dalej naciskając spację'
+	text = visual.TextStim(exp.window, text=text, **args)
+	text.wrapWidth = 20
+	text.draw(); exp.window.flip()
+	k = event.waitKeys(keyList=['space'])
 
-    instr.present(stop=7)
-
+	instr.present(stop=7)
     exp.show_all_trials()
     return exp
 

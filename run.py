@@ -78,9 +78,9 @@ def run(window=None, subject_id=None, true_key=None,
     
     # ask if everything is clear
     args = {'units': 'deg', 'height': exp.settings['sizes']['key_info']}
-    text = u'Jeżeli masz jakieś pytania/wątpliwości dotyczące zadania, ' + \
-        u'możesz zapytać się eksperymentatora.\nJeżeli nie masz żadnych' + \
-        u'pytań, możesz przejść dalej naciskając spację'
+    text = u'Jeżeli masz jakieś pytania lub wątpliwości dotyczące zadania, ' + \
+        u'możesz zapytać się eksperymentatora.\n\nJeżeli nie masz żadnych ' + \
+        u'pytań, możesz przejść dalej naciskając spację.'
     text = visual.TextStim(exp.window, text=text, **args)
     text.wrapWidth = 20
     text.draw(); exp.window.flip()

@@ -86,7 +86,7 @@ def run(window=None, subject_id=None, true_key=None,
     text.draw(); exp.window.flip()
     k = event.waitKeys(keyList=['space'])
 
-	instr.present(stop=7)
+    instr.present(stop=7)
     exp.show_all_trials()
     return exp
 

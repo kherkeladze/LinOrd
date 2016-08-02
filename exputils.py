@@ -13,9 +13,8 @@ import pandas as pd
 from psychopy import visual, event, core, gui
 
 # TODOs:
-# - [ ] resolve pre-relation time and pre-question time?
 # - [ ] configurable feedback time
-# - [ ] test markers
+# - [x] test markers
 
 
 class LinOrdExperiment(object):
